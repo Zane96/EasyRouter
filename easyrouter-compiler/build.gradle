@@ -1,0 +1,14 @@
+apply plugin: 'java'
+
+apply plugin: 'maven'
+group='com.github.Zane96'
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.squareup:javapoet:1.8.0'
+    compile 'com.google.auto.service:auto-service:1.0-rc2'
+    compile project(':easyrouter-annotation')
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
