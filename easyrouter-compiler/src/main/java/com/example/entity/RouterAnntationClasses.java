@@ -85,6 +85,8 @@ public class RouterAnntationClasses {
      */
     public void generateCode(Elements elementUtils, Filer filer) throws IOException{
 
+
+
         if (datas.size() > 0){
             //private Map<String, Class<?>> routerTable;
             FieldSpec routerTable = FieldSpec.builder(Map.class, "routerTable")
@@ -101,13 +103,12 @@ public class RouterAnntationClasses {
              return target;
              }
              */
-            ParameterSpec url = ParameterSpec.builder(String.class, "url")
-                                        .build();
+            ParameterSpec url = ParameterSpec.builder(String.class, "url").build();
             MethodSpec queryTable = MethodSpec.methodBuilder("queryTable")
                                             .addAnnotation(Override.class)
                                             .addModifiers(Modifier.PUBLIC)
                                             .addParameter(url)
-                                            .addStatement("Class<?> target = (Class<?>) routerTable.get(url)")
+                                            .addStatement("Class<? extends Activity> target = (Class<? extends Activity>) routerTable.get(url)")
                                             .beginControlFlow("if (target == null)")
                                             .addStatement("throw new $T(url)", NoSuchElementException.class)
                                             .endControlFlow()
@@ -138,49 +139,50 @@ public class RouterAnntationClasses {
              }
              */
             ClassName hashMap = ClassName.get(HashMap.class);
+            ClassName activity = ClassName.get("android.app", "Activity");
             MethodSpec constructor = MethodSpec.constructorBuilder()
-                                             .addModifiers(Modifier.PRIVATE)
-                                             .addStatement("$N = new $T<String, Class<?>>()", routerTable, hashMap)
+                                             .addModifiers(Modifier.PUBLIC)
+                                             .addStatement("$N = new $T<String, Class<? extends $T>>()", routerTable, hashMap, activity)
                                              .addStatement("$N()", initTable)
                                              .build();
 
-            /**
-             * 内部静态holder类
-             * private static final class SingletonHolder{
-             private static final RouterTableExample instance = new RouterTableExample();
-             }
-             */
-            ClassName instanceClass = ClassName.get("com.example.zane.testhook", "RouterTable");
-            CodeBlock initBlock = CodeBlock.builder()
-                                          .addStatement("instance = new $T()", instanceClass)
-                                          .build();
-            TypeSpec singletonHolder = TypeSpec.classBuilder("SingletonHolder")
-                                               .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-                                               .addField(instanceClass, "instance", Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-                                               .addStaticBlock(initBlock)
-                                               .build();
-
-            /**
-             * public static RouterTableExample getInstacne(){
-             return SingletonHolder.instance;
-             }
-             */
-            MethodSpec getInstance = MethodSpec.methodBuilder("getInstance")
-                                             .addModifiers(Modifier.STATIC, Modifier.PUBLIC)
-                                             .addStatement("return $N.instance", singletonHolder)
-                                             .returns(instanceClass)
-                                             .build();
+//            /**
+//             * 内部静态holder类
+//             * private static final class SingletonHolder{
+//             private static final RouterTableExample instance = new RouterTableExample();
+//             }
+//             */
+//            ClassName instanceClass = ClassName.get("com.example.zane.testhook", "RouterTable");
+//            CodeBlock initBlock = CodeBlock.builder()
+//                                          .addStatement("instance = new $T()", instanceClass)
+//                                          .build();
+//            TypeSpec singletonHolder = TypeSpec.classBuilder("SingletonHolder")
+//                                               .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+//                                               .addField(instanceClass, "instance", Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+//                                               .addStaticBlock(initBlock)
+//                                               .build();
+//
+//            /**
+//             * public static RouterTableExample getInstacne(){
+//             return SingletonHolder.instance;
+//             }
+//             */
+//            MethodSpec getInstance = MethodSpec.methodBuilder("getInstance")
+//                                             .addModifiers(Modifier.STATIC, Modifier.PUBLIC)
+//                                             .addStatement("return $N.instance", singletonHolder)
+//                                             .returns(instanceClass)
+//                                             .build();
 
             //Table接口
-            ClassName table = ClassName.get("com.example.zane.easyrouter", "Table");
+            ClassName table = ClassName.get("com.example.zane.router.router", "Table");
             //开始组装类
-            TypeSpec routerTableClass = TypeSpec.classBuilder("RouterTable")
+            TypeSpec routerTableClass = TypeSpec.classBuilder("EasyRouterTable")
                                                 .addModifiers(Modifier.PUBLIC)
                                                 .addMethod(constructor)
                                                 .addMethod(initTable)
                                                 .addMethod(queryTable)
-                                                .addMethod(getInstance)
-                                                .addType(singletonHolder)
+                                                //.addMethod(getInstance)
+                                                //.addType(singletonHolder)
                                                 .addField(routerTable)
                                                 .addSuperinterface(table)
                                                 .build();

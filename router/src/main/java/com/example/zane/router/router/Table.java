@@ -1,5 +1,7 @@
 package com.example.zane.router.router;
 
+import android.app.Activity;
+
 /**
  * Created by Zane on 2016/12/23.
  * Email: zanebot96@gmail.com
@@ -7,5 +9,5 @@ package com.example.zane.router.router;
  */
 
 public interface Table {
-    Class queryTable(String url);
+    Class<? extends Activity> queryTable(String url);
 }

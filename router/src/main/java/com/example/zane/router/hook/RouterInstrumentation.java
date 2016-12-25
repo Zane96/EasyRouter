@@ -6,9 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 
-import com.example.zane.router.router.Router;
+import com.example.zane.router.EasyRouter;
+import com.example.zane.router.router.BaseRouter;
 import com.example.zane.router.router.Table;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,22 +34,38 @@ public class RouterInstrumentation extends Instrumentation {
 
     public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Activity t,
                                             Intent rawIntent, int requestCode, Bundle options){
+        String url = rawIntent.getStringExtra(BaseRouter.ROUTER_URL);
+        Method execStart = null;
         try {
-            Method execStart = Instrumentation.class.getDeclaredMethod("execStartActivity", Context.class, IBinder.class,
+            execStart =Instrumentation.class.getDeclaredMethod("execStartActivity", Context.class, IBinder.class,
                     IBinder.class, Activity.class, Intent.class, int.class, Bundle.class);
             execStart.setAccessible(true);
-            String url = rawIntent.getStringExtra(Router.ROUTER_URL);
-            Class target = routerTable.queryTable(url);
-            Intent intent = new Intent(who, target);
-            intent.putExtras(rawIntent.getExtras());
-
-            return (ActivityResult) execStart.invoke(mBase, who, contextThread, token, t, intent, requestCode, options);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        }
+
+        if ("activity://".equals(url.substring(0, 11))){
+            try {
+                Class target = routerTable.queryTable(url);
+                Intent intent = new Intent(who, target);
+                intent.putExtras(rawIntent.getExtras());
+
+                return (ActivityResult) execStart.invoke(mBase, who, contextThread, token, t,
+                        intent, requestCode, options);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                return (ActivityResult) execStart.invoke(mBase, who, contextThread, token, t,
+                        rawIntent, requestCode, options);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

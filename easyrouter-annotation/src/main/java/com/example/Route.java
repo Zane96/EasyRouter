@@ -21,10 +21,4 @@ public @interface Route{
      * @return
      */
     String url() default "null";
-
-    /**
-     * 被注解标记的类class
-     * @return
-     */
-    Class<?> self();
 }
