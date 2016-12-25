@@ -9,9 +9,16 @@
     tools:context="com.example.zane.easyrouter.MainActivity">
 
     <Button
+        android:text="跳转ActivityTwo回传参数"
+        android:layout_margin="10dp"
+        android:id="@+id/button_start_activitytwo_foresult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
         android:text="跳转ActivityTwo"
         android:layout_margin="10dp"
-        android:id="@+id/button"
+        android:id="@+id/button_start_activitytwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

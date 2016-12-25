@@ -20,5 +20,5 @@ public @interface Route{
      * 某个类的路由信息
      * @return
      */
-    String url() default "null";
+    String value() default "null";
 }

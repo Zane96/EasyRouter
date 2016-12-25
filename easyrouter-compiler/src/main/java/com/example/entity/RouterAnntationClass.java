@@ -35,7 +35,7 @@ public class RouterAnntationClass {
         //获取url
         try {
             //如果是编译了的.class就不会抛出异常
-            String rawUrl = rawRoute.url();
+            String rawUrl = rawRoute.value();
             if (judgeUrl(rawUrl)){
                 url = rawUrl;
             }
@@ -46,7 +46,7 @@ public class RouterAnntationClass {
             className = classTypeElement.getSimpleName();
 
             Route route = classTypeElement.getAnnotation(Route.class);
-            String rawUrl = route.url();
+            String rawUrl = route.value();
             if (judgeUrl(rawUrl)){
                 url = rawUrl;
             }
