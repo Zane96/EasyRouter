@@ -2,7 +2,13 @@ package com.example.entity;
 
 import com.example.Route;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -27,30 +33,43 @@ public class RouterAnntationClass {
     private Name className;
 
     public RouterAnntationClass(Element anntatedClassElement) {
+
         this.anntatedClassElement = (TypeElement) anntatedClassElement;
-        //总结，class
-        Route rawRoute = anntatedClassElement.getAnnotation(Route.class);
 
-        //------------------------------如果格式正确------------------------------
-        //获取url
-        try {
-            //如果是编译了的.class就不会抛出异常
-            String rawUrl = rawRoute.value();
-            if (judgeUrl(rawUrl)){
-                url = rawUrl;
-            }
-            className = anntatedClassElement.getSimpleName();
-        } catch (MirroredTypeException mte){
-            DeclaredType classTypeMirror = (DeclaredType) mte.getTypeMirror();
-            TypeElement classTypeElement = (TypeElement) classTypeMirror.asElement();
-            className = classTypeElement.getSimpleName();
-
-            Route route = classTypeElement.getAnnotation(Route.class);
-            String rawUrl = route.value();
-            if (judgeUrl(rawUrl)){
-                url = rawUrl;
+        List<? extends AnnotationMirror> annotationMirrors = anntatedClassElement.getAnnotationMirrors();
+        for (AnnotationMirror annotationMirror : annotationMirrors){
+            Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();
+            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : elementValues.entrySet()) {
+                Object value = entry.getValue().getValue();
+                url = (String) value;
+                className = this.anntatedClassElement.getSimpleName();
             }
         }
+
+//        this.anntatedClassElement = (TypeElement) anntatedClassElement;
+//        //总结，class
+//        Route rawRoute = anntatedClassElement.getAnnotation(Route.class);
+//
+//        //------------------------------如果格式正确------------------------------
+//        //获取url
+//        try {
+//            //如果是编译了的.class就不会抛出异常
+//            String rawUrl = rawRoute.value();
+//            if (judgeUrl(rawUrl)){
+//                url = rawUrl;
+//            }
+//            className = anntatedClassElement.getSimpleName();
+//        } catch (MirroredTypeException mte){
+//            DeclaredType classTypeMirror = (DeclaredType) mte.getTypeMirror();
+//            TypeElement classTypeElement = (TypeElement) classTypeMirror.asElement();
+//            className = classTypeElement.getSimpleName();
+//
+//            Route route = classTypeElement.getAnnotation(Route.class);
+//            String rawUrl = route.value();
+//            if (judgeUrl(rawUrl)){
+//                url = rawUrl;
+//            }
+//        }
     }
 
     /**

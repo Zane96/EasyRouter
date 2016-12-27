@@ -38,4 +38,12 @@ public class ActivityTwo extends AppCompatActivity{
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(RETURN_DATA, "data from two");
+        setResult(2, intent);
+        finish();
+    }
 }
