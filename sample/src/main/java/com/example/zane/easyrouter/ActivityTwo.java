@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.Parame;
+import com.example.ParamesMap;
 import com.example.Route;
 
 /**
@@ -16,9 +18,13 @@ import com.example.Route;
  */
 
 @Route("activity://two")
+@ParamesMap(index = {"p1", "p2"}, type = {String.class, Integer.class})
 public class ActivityTwo extends AppCompatActivity{
 
     public static final String RETURN_DATA = "return_code";
+
+    @Parame("data")
+    private String data;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

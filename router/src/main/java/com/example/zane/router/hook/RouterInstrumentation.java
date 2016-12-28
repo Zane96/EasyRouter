@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PersistableBundle;
 
 import com.example.zane.router.EasyRouter;
 import com.example.zane.router.router.BaseRouter;
@@ -32,12 +33,24 @@ public class RouterInstrumentation extends Instrumentation {
         this.routerTable = routerTable;
     }
 
+    public void callActivityOnCreate(Activity activity, Bundle icicle) {
+        try {
+            Method callOnCreat = Instrumentation.class.getDeclaredMethod("callActivityOnCreate", Activity.class, Bundle.class);
+            callOnCreat.setAccessible(true);
+            Intent intent = activity.getIntent();
+
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Activity t,
                                             Intent rawIntent, int requestCode, Bundle options){
         String url = rawIntent.getStringExtra(BaseRouter.ROUTER_URL);
         Method execStart = null;
         try {
-            execStart =Instrumentation.class.getDeclaredMethod("execStartActivity", Context.class, IBinder.class,
+            execStart = Instrumentation.class.getDeclaredMethod("execStartActivity", Context.class, IBinder.class,
                     IBinder.class, Activity.class, Intent.class, int.class, Bundle.class);
             execStart.setAccessible(true);
         } catch (NoSuchMethodException e) {

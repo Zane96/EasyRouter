@@ -1,7 +1,6 @@
 package com.example.entity;
 
 import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -29,26 +28,26 @@ import javax.lang.model.util.Elements;
  * Blog: zane96.github.io
  */
 
-public class RouterAnntationClasses {
+public class RouterAnnotationClasses {
 
     private Map<String, Name> routers;
-    private List<RouterAnntationClass> datas;
+    private List<RouterAnnotationClass> datas;
 
-    private RouterAnntationClasses(){
+    private RouterAnnotationClasses(){
         routers = new HashMap<>();
         datas = new ArrayList<>();
     }
 
     private static class SingltonHokder{
-        public static final RouterAnntationClasses instance = new RouterAnntationClasses();
+        public static final RouterAnnotationClasses instance = new RouterAnnotationClasses();
     }
 
-    public static RouterAnntationClasses getInstance(){return SingltonHokder.instance;}
+    public static RouterAnnotationClasses getInstance(){return SingltonHokder.instance;}
 
     /**
      * 添加到map中
      */
-    public void put(RouterAnntationClass data){
+    public void put(RouterAnnotationClass data){
 
         datas.add(data);
 

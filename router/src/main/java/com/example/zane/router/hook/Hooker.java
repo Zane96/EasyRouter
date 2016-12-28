@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 
 public class Hooker {
 
-//    public static void hookRoute(Activity activity){
+//    public static void hookRouter(Activity activity){
 //        Class<?> activityClass = null;
 //        try {
 //            Class appCompatActivityClass = Class.forName("android.support.v7.app.AppCompatActivity");
@@ -37,7 +37,11 @@ public class Hooker {
 //        }
 //    }
 
-    public static void hookRoute(Table table){
+    /**
+     * Hook startActivity/startActivityForResult两个方法
+     * @param table
+     */
+    public static void hookRouter(Table table){
         //拿到app的单例ActivityThread实例
         Class<?> activityThread = null;
         try {

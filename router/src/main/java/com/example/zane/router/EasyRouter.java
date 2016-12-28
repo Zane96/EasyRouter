@@ -31,7 +31,7 @@ public class EasyRouter {
      * @param table
      */
     public static void hook(Table table){
-        Hooker.hookRoute(table);
+        Hooker.hookRouter(table);
     }
 
     private EasyRouter(){
