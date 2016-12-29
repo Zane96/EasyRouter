@@ -26,6 +26,7 @@ public class ActivityRouter extends BaseRouter{
     public void startActivityForResult(Activity activity, String url, int requestCode){
         Intent intent = new Intent();
         intent.putExtra(ROUTER_URL, url);
+        intent.putExtra(INJECT_DATA, getTargetClassName(url));
         activity.startActivityForResult(intent, requestCode);
     }
 
@@ -39,6 +40,7 @@ public class ActivityRouter extends BaseRouter{
     public void startActivityForResult(Activity activity, String url, Intent rawIntent, int requestCode){
         Intent intent = new Intent(rawIntent);
         intent.putExtra(ROUTER_URL, url);
+        intent.putExtra(INJECT_DATA, getTargetClassName(url));
         activity.startActivityForResult(intent, requestCode);
     }
 }

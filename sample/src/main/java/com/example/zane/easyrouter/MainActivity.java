@@ -10,11 +10,10 @@ import android.widget.Toast;
 import com.example.Route;
 import com.example.zane.router.EasyRouter;
 
-@Route("activity://main")
+@Route("activity://mainactivity")
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1;
-    public static final String DATA = "data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +24,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra(DATA, "data from main");
-                EasyRouter.routeForResult(MainActivity.this, "activity://two", intent, REQUEST_CODE);
+                intent.putExtra("data", "data from main");
+                EasyRouter.routeForResult(MainActivity.this, "activity://activitytwo", intent, REQUEST_CODE);
             }
         });
 
         findViewById(R.id.button_start_activitytwo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EasyRouter.route(MainActivity.this, "activity://two");
+                EasyRouter.route(MainActivity.this, "activity://activitytwo");
             }
         });
 

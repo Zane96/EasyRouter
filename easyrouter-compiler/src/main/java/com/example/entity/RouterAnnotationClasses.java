@@ -84,8 +84,6 @@ public class RouterAnnotationClasses {
      */
     public void generateCode(Elements elementUtils, Filer filer) throws IOException{
 
-
-
         if (datas.size() > 0){
             //private Map<String, Class<?>> routerTable;
             FieldSpec routerTable = FieldSpec.builder(Map.class, "routerTable")

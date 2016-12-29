@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PersistableBundle;
+import android.util.Log;
+import android.util.SparseArray;
 
 import com.example.zane.router.EasyRouter;
 import com.example.zane.router.router.BaseRouter;
@@ -14,6 +16,8 @@ import com.example.zane.router.router.Table;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Zane on 2016/11/28.
@@ -28,17 +32,55 @@ public class RouterInstrumentation extends Instrumentation {
     private Instrumentation mBase;
     private Table routerTable;
 
+    //数据注入类的缓存
+    private final Map<String, Inject> injectMap;
+
     public RouterInstrumentation(Instrumentation mBase, Table routerTable) {
         this.mBase = mBase;
         this.routerTable = routerTable;
+        this.injectMap = new HashMap<>();
     }
 
     public void callActivityOnCreate(Activity activity, Bundle icicle) {
         try {
             Method callOnCreat = Instrumentation.class.getDeclaredMethod("callActivityOnCreate", Activity.class, Bundle.class);
             callOnCreat.setAccessible(true);
-            Intent intent = activity.getIntent();
 
+            //开始进行传递数据的注入
+            String className = activity.getIntent().getStringExtra(BaseRouter.INJECT_DATA);
+            String packageName = activity.getPackageName();
+
+            Log.i("my", className + "");
+
+            Inject inject = injectMap.get(className);
+            Boolean isClassFound = true;
+            if (inject == null) {
+                try {
+                    Log.i("my", className + " 2");
+
+                    Class<?> injectClass = Class.forName(String.format("%s.%s$$Inject", packageName, className));
+                    inject = (Inject) injectClass.newInstance();
+                    injectMap.put(className, inject);
+                } catch (ClassNotFoundException e) {
+                    isClassFound = false;
+                } catch (InstantiationException e) {
+                } catch (IllegalAccessException e) {
+                }
+            }
+
+            if (isClassFound){
+                inject.injectData(activity);
+
+                Log.i("my", className + " 3");
+            }
+
+            try {
+                callOnCreat.invoke(mBase, activity, icicle);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

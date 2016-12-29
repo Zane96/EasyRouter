@@ -15,6 +15,6 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.CLASS)
-public @interface Parame {
+public @interface Param {
     String value();
 }

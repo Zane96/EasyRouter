@@ -13,12 +13,13 @@ import android.content.Intent;
 
 public abstract class BaseRouter {
 
-    // TODO: 2016/12/25  这里用模版，方便后期扩展
     public static final String ROUTER_URL = "router_url";
+    public static final String INJECT_DATA = "inject_data";
 
     public void route (Context context, String url){
         Intent intent = new Intent();
         intent.putExtra(ROUTER_URL, url);
+        intent.putExtra(INJECT_DATA, getTargetClassName(url));
         isAppContext(context, intent);
         startRoute(context, url, intent);
     }
@@ -26,8 +27,18 @@ public abstract class BaseRouter {
     public void route (Context context, String url, Intent rawIntent){
         Intent intent = new Intent(rawIntent);
         intent.putExtra(ROUTER_URL, url);
+        intent.putExtra(INJECT_DATA, getTargetClassName(url));
         isAppContext(context, intent);
         startRoute(context, url, intent);
+    }
+
+    /**
+     * 从url中获取被启动组件的名字
+     * @param url
+     * @return
+     */
+    String getTargetClassName(String url){
+        return url.substring(11, url.length());
     }
 
     private void isAppContext(Context context, Intent intent){

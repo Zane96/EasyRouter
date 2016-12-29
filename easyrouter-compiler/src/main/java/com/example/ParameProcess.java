@@ -4,6 +4,7 @@ import com.example.entity.ParameAnnotationClass;
 import com.example.entity.ParameAnnotationClasses;
 import com.google.auto.service.AutoService;
 
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -25,29 +26,36 @@ public class ParameProcess extends BaseProcess{
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        for (Element parameElement : roundEnv.getElementsAnnotatedWith(Parame.class)){
+
+        ParameAnnotationClasses.getInstance().clear();
+
+        for (Element parameElement : roundEnv.getElementsAnnotatedWith(Param.class)){
             if (parameElement.getKind() != ElementKind.FIELD){
-                printError(parameElement, "Only field can be annotated with @Parame");
+                printError(parameElement, "Only field can be annotated with @Param");
                 return true;
             }
             ParameAnnotationClass parameAnnotationClass = new ParameAnnotationClass(parameElement);
             ParameAnnotationClasses.getInstance().put(getClassName(parameElement), parameAnnotationClass);
         }
-
-        return false;
+        try {
+            ParameAnnotationClasses.getInstance().generateCode(elementUtils, filer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     //获取Activity或者Fragment的类名
     private String getClassName(Element element){
         //获取class type
         TypeElement classElement = (TypeElement) element.getEnclosingElement();
-        return classElement.getQualifiedName().toString();
+        return classElement.getSimpleName().toString();
     }
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> anntations = new LinkedHashSet<>();
-        anntations.add(Parame.class.getCanonicalName());
+        anntations.add(Param.class.getCanonicalName());
         return anntations;
     }
 }

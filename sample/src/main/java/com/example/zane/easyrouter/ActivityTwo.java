@@ -7,8 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.Parame;
-import com.example.ParamesMap;
+import com.example.Param;
 import com.example.Route;
 
 /**
@@ -17,21 +16,20 @@ import com.example.Route;
  * Blog: zane96.github.io
  */
 
-@Route("activity://two")
-@ParamesMap(index = {"p1", "p2"}, type = {String.class, Integer.class})
+@Route("activity://activitytwo")
 public class ActivityTwo extends AppCompatActivity{
 
     public static final String RETURN_DATA = "return_code";
 
-    @Parame("data")
-    private String data;
+    @Param("data")
+    public String data;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two);
 
-        String data = getIntent().getStringExtra(MainActivity.DATA);
+        //String data = getIntent().getStringExtra(MainActivity.DATA);
         Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
 
         findViewById(R.id.button_two).setOnClickListener(new View.OnClickListener() {
