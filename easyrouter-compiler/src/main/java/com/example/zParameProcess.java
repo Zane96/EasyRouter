@@ -22,7 +22,7 @@ import javax.lang.model.element.TypeElement;
  */
 
 @AutoService(Processor.class)
-public class ParameProcess extends BaseProcess{
+public class zParameProcess extends BaseProcess{
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

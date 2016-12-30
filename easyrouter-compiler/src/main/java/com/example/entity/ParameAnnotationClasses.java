@@ -81,15 +81,17 @@ public class ParameAnnotationClasses {
             //构建类
             //Inject接口
             ClassName inject = ClassName.get("com.example.zane.router.hook", "Inject");
-            TypeSpec.Builder injectClassBuilder = TypeSpec.classBuilder(String.format("%s$$Inject", className.toLowerCase()))
+            String url = RouterAnnotationClasses.getInstance().getUrl(className);
+            String urlClassName = url.substring(11, url.length());
+            TypeSpec.Builder injectClassBuilder = TypeSpec.classBuilder(String.format("%s$$Inject", urlClassName))
                                                           .addSuperinterface(inject)
                                                           .addModifiers(Modifier.PUBLIC);
 
             /**
              * public void injectData(Activity activity){
-             ((xxxActivity) activity).data = activity.getIntent().getString("data");
-             ....
-             }
+                    ((xxxActivity) activity).data = activity.getIntent().getString("data");
+                    ....
+                }
              */
             ClassName activity = ClassName.get("android.app", "Activity");
             ClassName log = ClassName.get("android.util", "Log");

@@ -91,6 +91,7 @@ public class RouterInstrumentation extends Instrumentation {
                                             Intent rawIntent, int requestCode, Bundle options){
         String url = rawIntent.getStringExtra(BaseRouter.ROUTER_URL);
         Method execStart = null;
+
         try {
             execStart = Instrumentation.class.getDeclaredMethod("execStartActivity", Context.class, IBinder.class,
                     IBinder.class, Activity.class, Intent.class, int.class, Bundle.class);

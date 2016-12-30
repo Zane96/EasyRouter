@@ -16,7 +16,7 @@ import com.example.Route;
  * Blog: zane96.github.io
  */
 
-@Route("activity://activitytwo")
+@Route("activity://two")
 public class ActivityTwo extends AppCompatActivity{
 
     public static final String RETURN_DATA = "return_code";

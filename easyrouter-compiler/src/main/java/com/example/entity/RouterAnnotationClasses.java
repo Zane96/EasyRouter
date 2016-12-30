@@ -69,6 +69,26 @@ public class RouterAnnotationClasses {
     }
 
     /**
+     * 这个方法给参数注入的Holder类持有类给调用
+     * 回去到类对应的url，用url去构建注入类。方便开发者自定义url
+     * @param className
+     * @return
+     */
+    public String getUrl(String className) {
+        Set<Map.Entry<String, Name>> routerSet = routers.entrySet();
+        Iterator<Map.Entry<String, Name>> iterator = routerSet.iterator();
+        String url = "";
+        while (iterator.hasNext()) {
+            Map.Entry<String, Name> entry = iterator.next();
+            if (entry.getValue().toString().equals(className)) {
+                url = entry.getKey();
+                break;
+            }
+        }
+        return url;
+    }
+
+    /**
      * 清空
      */
     public void clear(){
@@ -142,33 +162,6 @@ public class RouterAnnotationClasses {
                                              .addStatement("$N = new $T<String, Class<? extends $T>>()", routerTable, hashMap, activity)
                                              .addStatement("$N()", initTable)
                                              .build();
-
-//            /**
-//             * 内部静态holder类
-//             * private static final class SingletonHolder{
-//             private static final RouterTableExample instance = new RouterTableExample();
-//             }
-//             */
-//            ClassName instanceClass = ClassName.get("com.example.zane.testhook", "RouterTable");
-//            CodeBlock initBlock = CodeBlock.builder()
-//                                          .addStatement("instance = new $T()", instanceClass)
-//                                          .build();
-//            TypeSpec singletonHolder = TypeSpec.classBuilder("SingletonHolder")
-//                                               .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-//                                               .addField(instanceClass, "instance", Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-//                                               .addStaticBlock(initBlock)
-//                                               .build();
-//
-//            /**
-//             * public static RouterTableExample getInstacne(){
-//             return SingletonHolder.instance;
-//             }
-//             */
-//            MethodSpec getInstance = MethodSpec.methodBuilder("getInstance")
-//                                             .addModifiers(Modifier.STATIC, Modifier.PUBLIC)
-//                                             .addStatement("return $N.instance", singletonHolder)
-//                                             .returns(instanceClass)
-//                                             .build();
 
             //Table接口
             ClassName table = ClassName.get("com.example.zane.router.router", "Table");

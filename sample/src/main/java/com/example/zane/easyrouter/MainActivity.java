@@ -1,16 +1,15 @@
 package com.example.zane.easyrouter;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.Route;
 import com.example.zane.router.EasyRouter;
 
-@Route("activity://mainactivity")
+@Route("activity://main")
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1;
@@ -25,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.putExtra("data", "data from main");
-                EasyRouter.routeForResult(MainActivity.this, "activity://activitytwo", intent, REQUEST_CODE);
+                EasyRouter.routeForResult(MainActivity.this, "activity://two", intent, REQUEST_CODE);
             }
         });
 
         findViewById(R.id.button_start_activitytwo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EasyRouter.route(MainActivity.this, "activity://activitytwo");
+                EasyRouter.route(MainActivity.this, "activity://two");
             }
         });
 
