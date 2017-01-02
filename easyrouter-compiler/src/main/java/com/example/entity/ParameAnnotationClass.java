@@ -25,7 +25,7 @@ public class ParameAnnotationClass {
 
         Param parame = mParameElement.getAnnotation(Param.class);
         key = parame.value();
-        // TODO: 2016/12/28 测试两种名字获得的区别
+
         parameName = this.mParameElement.getSimpleName().toString();
     }
 

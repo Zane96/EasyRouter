@@ -8,7 +8,6 @@ import com.squareup.javapoet.TypeSpec;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,17 +80,16 @@ public class ParameAnnotationClasses {
             //构建类
             //Inject接口
             ClassName inject = ClassName.get("com.example.zane.router.hook", "Inject");
-            String url = RouterAnnotationClasses.getInstance().getUrl(className);
-            String urlClassName = url.substring(11, url.length());
+            String urlClassName = RouterAnnotationClasses.getInstance().getUrl(className);
             TypeSpec.Builder injectClassBuilder = TypeSpec.classBuilder(String.format("%s$$Inject", urlClassName))
                                                           .addSuperinterface(inject)
                                                           .addModifiers(Modifier.PUBLIC);
 
             /**
              * public void injectData(Activity activity){
-                    ((xxxActivity) activity).data = activity.getIntent().getString("data");
-                    ....
-                }
+             ((xxxActivity) activity).data = activity.getIntent().getString("data");
+             ....
+             }
              */
             ClassName activity = ClassName.get("android.app", "Activity");
             ClassName log = ClassName.get("android.util", "Log");

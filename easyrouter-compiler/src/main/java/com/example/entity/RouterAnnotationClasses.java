@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import com.example.Route;
+import com.example.RouterUtil;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -8,6 +10,7 @@ import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,14 +51,9 @@ public class RouterAnnotationClasses {
      * 添加到map中
      */
     public void put(RouterAnnotationClass data){
-
         datas.add(data);
-
         String url = data.getUrl();
         Name target = data.getClassName();
-        if (routers.get(url) != null){
-            // TODO: 2016/12/20  抛异常
-        }
         routers.put(url, target);
     }
 
@@ -81,7 +79,7 @@ public class RouterAnnotationClasses {
         while (iterator.hasNext()) {
             Map.Entry<String, Name> entry = iterator.next();
             if (entry.getValue().toString().equals(className)) {
-                url = entry.getKey();
+                url = RouterUtil.getAuthority(entry.getKey());
                 break;
             }
         }

@@ -50,24 +50,10 @@ public class RouterAnnotationClass {
         Route rawRoute = anntatedClassElement.getAnnotation(Route.class);
         //如果是编译了的.class就不会抛出异常
         String rawUrl = rawRoute.value();
-        if (judgeUrl(rawUrl)){
-            url = rawUrl;
-        }
+        url = rawUrl;
         className = anntatedClassElement.getSimpleName();
 
         //------------------------------如果格式正确------------------------------
-    }
-
-    /**
-     * 判断url格式
-     * @param url
-     * @return
-     */
-    private boolean judgeUrl(String url){
-        if ("activity://".equals(url.substring(0, 11))){
-            return true;
-        }
-        return false;
     }
 
     public String getUrl() {
