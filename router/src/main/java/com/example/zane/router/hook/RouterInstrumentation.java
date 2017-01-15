@@ -50,14 +50,10 @@ public class RouterInstrumentation extends Instrumentation {
             String className = activity.getIntent().getStringExtra(BaseRouter.INJECT_DATA);
             String packageName = activity.getPackageName();
 
-            Log.i("my", className + "");
-
             Inject inject = injectMap.get(className);
             Boolean isClassFound = true;
             if (inject == null) {
                 try {
-                    Log.i("my", className + " 2");
-
                     Class<?> injectClass = Class.forName(String.format("%s.%s$$Inject", packageName, className));
                     inject = (Inject) injectClass.newInstance();
                     injectMap.put(className, inject);
@@ -70,8 +66,6 @@ public class RouterInstrumentation extends Instrumentation {
 
             if (isClassFound){
                 inject.injectData(activity);
-
-                Log.i("my", className + " 3");
             }
 
             try {
