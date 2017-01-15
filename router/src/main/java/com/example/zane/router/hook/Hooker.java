@@ -1,5 +1,7 @@
 package com.example.zane.router.hook;
 
+import android.app.Activity;
+import android.app.Application;
 import android.app.Instrumentation;
 
 
@@ -16,7 +18,7 @@ import java.lang.reflect.Method;
 
 public class Hooker {
 
-//    public static void hookRouter(Activity activity){
+//    public static void hookRouter(Activity activity, Table table){
 //        Class<?> activityClass = null;
 //        try {
 //            Class appCompatActivityClass = Class.forName("android.support.v7.app.AppCompatActivity");
@@ -30,7 +32,7 @@ public class Hooker {
 //            Field mInstrumentation = activityClass.getDeclaredField("mInstrumentation");
 //            mInstrumentation.setAccessible(true);
 //            Instrumentation mBase = (Instrumentation) mInstrumentation.get(activity);
-//            MyInstrumenttation instrumenttation = new MyInstrumenttation(mBase);
+//            RouterInstrumentation instrumenttation = new RouterInstrumentation(mBase, table);
 //            mInstrumentation.set(activity, instrumenttation);
 //        } catch (Exception e) {
 //            e.printStackTrace();

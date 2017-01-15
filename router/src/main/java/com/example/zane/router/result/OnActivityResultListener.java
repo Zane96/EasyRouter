@@ -8,6 +8,10 @@ import android.content.Intent;
 
 public interface OnActivityResultListener {
 
+    /**
+     * 只需要关心resultCode，因为都是一对一定向启动Activity的
+     * @param resultCode
+     * @param data
+     */
     void onActivityResult(int resultCode, Intent data);
-
 }

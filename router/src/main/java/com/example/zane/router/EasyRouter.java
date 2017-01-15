@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.zane.router.hook.Hooker;
+import com.example.zane.router.result.ActivityResultEngine;
+import com.example.zane.router.result.OnActivityResultListener;
 import com.example.zane.router.router.ActivityRouter;
 import com.example.zane.router.router.BaseRouter;
 import com.example.zane.router.router.HttpRouter;
@@ -64,9 +66,9 @@ public class EasyRouter {
      * @param url
      * @param requestCode
      */
-    public static void routeForResult(Activity context, String url, int requestCode){
+    public static void routeForResult(Activity context, String url, int requestCode, OnActivityResultListener listener){
         ActivityRouter router = new ActivityRouter();
-        router.startActivityForResult(context, url, requestCode);
+        router.startActivityForResult(context, url, requestCode, listener);
     }
 
     /**
@@ -76,9 +78,9 @@ public class EasyRouter {
      * @param rawIntent
      * @param requestCode
      */
-    public static void routeForResult(Activity context, String url, Intent rawIntent, int requestCode){
+    public static void routeForResult(Activity context, String url, Intent rawIntent, int requestCode, OnActivityResultListener listener){
         ActivityRouter router = new ActivityRouter();
-        router.startActivityForResult(context, url, rawIntent, requestCode);
+        router.startActivityForResult(context, url, rawIntent, requestCode, listener);
     }
 
     private static BaseRouter getRouterFromScheme(String url){
