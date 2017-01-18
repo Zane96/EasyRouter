@@ -2,10 +2,10 @@ package com.example.zane.router;
 
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.zane.easyrouter_generated.EasyRouterTable;
 import com.example.zane.router.hook.Hooker;
 import com.example.zane.router.result.ActivityResultEngine;
 import com.example.zane.router.result.OnActivityResultListener;
@@ -31,9 +31,10 @@ public class EasyRouter {
 
     /**
      * 全局hook
+     * @param table
      */
-    public static void hook(){
-        Hooker.hookRouter();
+    public static void hook(Application context, Table table){
+        Hooker.hookRouter(table, context);
     }
 
     private EasyRouter(){
