@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.PersistableBundle;
 import android.util.Log;
-import android.util.SparseArray;
 
-import com.example.zane.router.EasyRouter;
+import com.example.zane.router.inject.Inject;
 import com.example.zane.router.router.BaseRouter;
 import com.example.zane.router.router.Table;
 
@@ -32,61 +30,16 @@ public class RouterInstrumentation extends Instrumentation {
     private Instrumentation mBase;
     private Table routerTable;
 
-    //数据注入类的缓存
-    private final Map<String, Inject> injectMap;
-
     public RouterInstrumentation(Instrumentation mBase, Table routerTable) {
         this.mBase = mBase;
         this.routerTable = routerTable;
-        this.injectMap = new HashMap<>();
     }
-
-    public void callActivityOnCreate(Activity activity, Bundle icicle) {
-        try {
-            Method callOnCreat = Instrumentation.class.getDeclaredMethod("callActivityOnCreate", Activity.class, Bundle.class);
-            callOnCreat.setAccessible(true);
-
-            //开始进行传递数据的注入
-            String className = activity.getIntent().getStringExtra(BaseRouter.INJECT_DATA);
-            String packageName = activity.getPackageName();
-
-            Inject inject = injectMap.get(className);
-            Boolean isClassFound = true;
-            if (inject == null) {
-                try {
-                    Class<?> injectClass = Class.forName(String.format("%s.%s$$Inject", packageName, className));
-                    inject = (Inject) injectClass.newInstance();
-                    injectMap.put(className, inject);
-                } catch (ClassNotFoundException e) {
-                    isClassFound = false;
-                } catch (InstantiationException e) {
-                } catch (IllegalAccessException e) {
-                }
-            }
-
-            if (isClassFound){
-                inject.injectData(activity);
-            }
-
-            try {
-                callOnCreat.invoke(mBase, activity, icicle);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Activity t,
                                             Intent rawIntent, int requestCode, Bundle options){
         String url = rawIntent.getStringExtra(BaseRouter.ROUTER_URL);
         Method execStart = null;
 
-        Log.i("hook", "hook for result");
         try {
             execStart = Instrumentation.class.getDeclaredMethod("execStartActivity", Context.class, IBinder.class,
                     IBinder.class, Activity.class, Intent.class, int.class, Bundle.class);

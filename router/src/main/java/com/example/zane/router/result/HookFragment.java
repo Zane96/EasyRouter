@@ -21,7 +21,6 @@ public class HookFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("Ferryman","data"+data);
         listener.onActivityResult(resultCode, data);
     }
 }

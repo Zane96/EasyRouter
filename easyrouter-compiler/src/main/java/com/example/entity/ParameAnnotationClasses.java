@@ -79,7 +79,7 @@ public class ParameAnnotationClasses {
 
             //构建类
             //Inject接口
-            ClassName inject = ClassName.get("com.example.zane.router.hook", "Inject");
+            ClassName inject = ClassName.get("com.example.zane.router.inject", "Inject");
             String urlClassName = RouterAnnotationClasses.getInstance().getUrl(className);
             TypeSpec.Builder injectClassBuilder = TypeSpec.classBuilder(String.format("%s$$Inject", urlClassName))
                                                           .addSuperinterface(inject)
