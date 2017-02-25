@@ -28,6 +28,18 @@ EasyRouter.hook(new EasyRouterTable());
 EasyRouter.route(MainActivity.this, "activity://two");
 ```
 
+​	Activity返回数据的回调
+
+```java
+EasyRouter.routeForResult(MainActivity.this, "activity://two", intent, REQUEST_CODE, new            	OnActivityResultListener() {
+         @Override
+         public void onActivityResult(int resultCode, Intent data) {
+                  String result = data.getStringExtra(ActivityTwo.RETURN_DATA);
+                  Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+         }
+ });
+```
+
 ​	Web页面跳转
 
 ```java
@@ -58,3 +70,4 @@ EasyRouter.route(MainActivity.this, "activity://two", intent);
 + 支持data，action等数据的添加
 + 统一吊起系统应用的API
 + 支持WebView
++ 返回数据的自动注入
