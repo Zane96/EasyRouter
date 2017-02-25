@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.zane.router.result.ActivityResultEngine;
+import com.example.zane.router.result.OnActivityResultListener;
+
 /**
  * Created by Zane on 2016/12/23.
  * Email: zanebot96@gmail.com
@@ -19,15 +22,17 @@ public class ActivityRouter extends BaseRouter{
 
     /**
      * 不带参数的startActivityForResult()
+     * 这里不应该再是activity去启动组件而是由fragment去启动并hook
      * @param activity 可以确定是Activity的context
      * @param url
      * @param requestCode
      */
-    public void startActivityForResult(Activity activity, String url, int requestCode){
+    public void startActivityForResult(Activity activity, String url, int requestCode, OnActivityResultListener listener){
         Intent intent = new Intent();
         intent.putExtra(ROUTER_URL, url);
         intent.putExtra(INJECT_DATA, getTargetClassName(url));
-        activity.startActivityForResult(intent, requestCode);
+        ActivityResultEngine.startHookFragment(activity, requestCode, intent, listener);
+        //activity.startActivityForResult(intent, requestCode);
     }
 
     /**
@@ -37,10 +42,11 @@ public class ActivityRouter extends BaseRouter{
      * @param rawIntent
      * @param requestCode
      */
-    public void startActivityForResult(Activity activity, String url, Intent rawIntent, int requestCode){
+    public void startActivityForResult(Activity activity, String url, Intent rawIntent, int requestCode, OnActivityResultListener listener){
         Intent intent = new Intent(rawIntent);
         intent.putExtra(ROUTER_URL, url);
         intent.putExtra(INJECT_DATA, getTargetClassName(url));
-        activity.startActivityForResult(intent, requestCode);
+        ActivityResultEngine.startHookFragment(activity, requestCode, intent, listener);
+        //activity.startActivityForResult(intent, requestCode);
     }
 }

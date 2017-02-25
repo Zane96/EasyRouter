@@ -1,5 +1,6 @@
 package com.example.zane.easyrouter;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.example.Route;
 public class ActivityTwo extends AppCompatActivity{
 
     public static final String RETURN_DATA = "return_code";
+    public static final int RESULT_CODE = 2;
 
     @Param("data")
     public String data;
@@ -37,18 +39,20 @@ public class ActivityTwo extends AppCompatActivity{
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.putExtra(RETURN_DATA, "data from two");
-                setResult(2, intent);
+                setResult(RESULT_CODE, intent);
                 ActivityTwo.this.finish();
             }
         });
 
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.add(R.id.fragment_activity_two, new FragmentTwo()).commit();
     }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
         intent.putExtra(RETURN_DATA, "data from two");
-        setResult(2, intent);
+        setResult(RESULT_CODE, intent);
         finish();
     }
 }

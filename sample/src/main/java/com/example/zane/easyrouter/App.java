@@ -16,5 +16,6 @@ public class App extends Application{
     public void onCreate() {
         super.onCreate();
         EasyRouter.hook(new EasyRouterTable());
+        //EasyRouter.hook();
     }
 }
