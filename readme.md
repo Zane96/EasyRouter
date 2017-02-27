@@ -22,16 +22,16 @@ EasyRouter.hook(new EasyRouterTable());
 
 3. 跳转
 
-   Activity之间无参数传递跳转
++ Activity之间无参数传递跳转
 
 ```java
 EasyRouter.route(MainActivity.this, "activity://two");
 ```
 
-​	Activity返回数据的回调
++ Activity返回数据的回调
 
 ```java
-EasyRouter.routeForResult(MainActivity.this, "activity://two", intent, REQUEST_CODE, new            	OnActivityResultListener() {
+EasyRouter.routeForResult(MainActivity.this, "activity://two", intent, REQUEST_CODE, new OnActivityResultListener() {
          @Override
          public void onActivityResult(int resultCode, Intent data) {
                   String result = data.getStringExtra(ActivityTwo.RETURN_DATA);
@@ -40,13 +40,13 @@ EasyRouter.routeForResult(MainActivity.this, "activity://two", intent, REQUEST_C
  });
 ```
 
-​	Web页面跳转
++ Web页面跳转
 
 ```java
 EasyRouter.route(MainActivity.this, "http://xzane.cc");
 ```
 
-​	Activity之间传递参数跳转
++ Activity之间传递参数跳转
 
 ```java
 @Param("key")
