@@ -6,7 +6,7 @@ EasyRouter是一个利用URL去进行Activity，Web页面跳转的路由框架�
 
 ## 使用
 
-1. 在Activity中自定义URL标识符，目前只支持单一的URL标识，URL的Scheme均为**activity://**
+1.在Activity中自定义URL标识符，目前只支持单一的URL标识，URL的Scheme均为**activity://**
 
 ```java
 @Route("activity://main")
@@ -14,13 +14,13 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-2. 在Application中进行初始化，传入通过APT生成的路由表，在这个过程前先保证项目已经Build成功
+2.在Application中进行初始化，传入通过APT生成的路由表，在这个过程前先保证项目已经Build成功
 
 ```java
 EasyRouter.hook(new EasyRouterTable());
 ```
 
-3. 跳转
+3.跳转
 
 + Activity之间无参数传递跳转
 
