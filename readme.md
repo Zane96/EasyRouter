@@ -67,7 +67,7 @@ EasyRouter.route(MainActivity.this, "activity://two", intent);
 
 ## TODO
 
-+ 支持data，action等数据的添加
-+ 统一吊起系统应用的API
-+ 支持WebView
-+ 返回数据的自动注入
++ 返回数据，自动注入
++ 请求报文实体类封装，Builder类生成URL，头部，数据body
++ 跳转时候的参数应该不依赖key的值，要自动或者手动注入
++ 地址做成多个
