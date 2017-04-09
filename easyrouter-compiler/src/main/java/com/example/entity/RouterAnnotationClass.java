@@ -1,6 +1,7 @@
 package com.example.entity;
 
 import com.example.Route;
+import com.squareup.javapoet.ClassName;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class RouterAnnotationClass {
     private String url;
 
     //这个类的Class
-    private Name className;
+    private ClassName className;
 
     public RouterAnnotationClass(Element anntatedClassElement) {
 
@@ -51,7 +52,7 @@ public class RouterAnnotationClass {
         //如果是编译了的.class就不会抛出异常
         String rawUrl = rawRoute.value();
         url = rawUrl;
-        className = anntatedClassElement.getSimpleName();
+        className = ClassName.bestGuess(((TypeElement) anntatedClassElement).getQualifiedName().toString());
 
         //------------------------------如果格式正确------------------------------
     }
@@ -60,7 +61,7 @@ public class RouterAnnotationClass {
         return url;
     }
 
-    public Name getClassName() {
+    public ClassName getClassName() {
         return className;
     }
 

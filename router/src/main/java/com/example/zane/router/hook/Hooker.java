@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Instrumentation;
 
 
+import com.example.zane.easyrouter_generated.EasyRouterTable;
 import com.example.zane.router.router.Table;
 
 import java.lang.reflect.Field;
@@ -41,9 +42,8 @@ public class Hooker {
 
     /**
      * Hook startActivity/startActivityForResult两个方法
-     * @param table
      */
-    public static void hookRouter(Table table){
+    public static void hookRouter(){
         //拿到app的单例ActivityThread实例
         Class<?> activityThread = null;
         try {
@@ -55,7 +55,7 @@ public class Hooker {
             Field mInstrumentation = activityThread.getDeclaredField("mInstrumentation");
             mInstrumentation.setAccessible(true);
             Instrumentation mBase = (Instrumentation) mInstrumentation.get(mCurrentThread);
-            RouterInstrumentation instrumenttation = new RouterInstrumentation(mBase, table);
+            RouterInstrumentation instrumenttation = new RouterInstrumentation(mBase, new EasyRouterTable());
             mInstrumentation.set(mCurrentThread, instrumenttation);
         } catch (Exception e) {
             e.printStackTrace();

@@ -3,6 +3,7 @@ package com.example;
 import com.example.entity.ParameAnnotationClass;
 import com.example.entity.ParameAnnotationClasses;
 import com.google.auto.service.AutoService;
+import com.squareup.javapoet.ClassName;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
@@ -46,10 +47,10 @@ public class zParameProcess extends BaseProcess{
     }
 
     //获取Activity或者Fragment的类名
-    private String getClassName(Element element){
+    private ClassName getClassName(Element element){
         //获取class type
         TypeElement classElement = (TypeElement) element.getEnclosingElement();
-        return classElement.getSimpleName().toString();
+        return ClassName.bestGuess(classElement.getQualifiedName().toString());
     }
 
     @Override

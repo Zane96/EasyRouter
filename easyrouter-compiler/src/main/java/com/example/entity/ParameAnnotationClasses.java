@@ -25,7 +25,7 @@ import javax.lang.model.util.Elements;
 public class ParameAnnotationClasses {
 
     //保持一个Activity名字和ParameAnnotationClass的映射关系
-    private Map<String, List<ParameAnnotationClass>> mParameAnnotationMap;
+    private Map<ClassName, List<ParameAnnotationClass>> mParameAnnotationMap;
 
     private ParameAnnotationClasses(){
         mParameAnnotationMap = new HashMap<>();
@@ -44,7 +44,7 @@ public class ParameAnnotationClasses {
      * @param className
      * @param parame
      */
-    public void put(String className, ParameAnnotationClass parame){
+    public void put(ClassName className, ParameAnnotationClass parame){
         List<ParameAnnotationClass> parames = mParameAnnotationMap.get(className);
         if (parames == null){
             parames = new ArrayList<>();
@@ -58,7 +58,7 @@ public class ParameAnnotationClasses {
      * @param className
      * @return
      */
-    public List<ParameAnnotationClass> get(String className){
+    public List<ParameAnnotationClass> get(ClassName className){
         return mParameAnnotationMap.get(className);
     }
 
@@ -73,14 +73,14 @@ public class ParameAnnotationClasses {
 
         Set entrySet = mParameAnnotationMap.entrySet();
         for (Object anEntrySet : entrySet) {
-            Map.Entry<String, List<ParameAnnotationClass>> entry = (Map.Entry<String, List<ParameAnnotationClass>>) anEntrySet;
-            String className = entry.getKey();
+            Map.Entry<ClassName, List<ParameAnnotationClass>> entry = (Map.Entry<ClassName, List<ParameAnnotationClass>>) anEntrySet;
+            ClassName className = entry.getKey();
             List<ParameAnnotationClass> parameAnnatationClasses = entry.getValue();
 
             //构建类
             //Inject接口
             ClassName inject = ClassName.get("com.example.zane.router.hook", "Inject");
-            String urlClassName = RouterAnnotationClasses.getInstance().getUrl(className);
+            String urlClassName = RouterAnnotationClasses.getInstance().getUrl(className.toString());
             TypeSpec.Builder injectClassBuilder = TypeSpec.classBuilder(String.format("%s$$Inject", urlClassName))
                                                           .addSuperinterface(inject)
                                                           .addModifiers(Modifier.PUBLIC);
@@ -99,15 +99,14 @@ public class ParameAnnotationClasses {
                                                            .addParameter(activity, "activity");
 
             for (ParameAnnotationClass parameAnnotationClass : parameAnnatationClasses) {
-                injectDataBuilder.addStatement("(($N) activity).$N = activity.getIntent().getStringExtra($S)",
-                        className, parameAnnotationClass.getParameName(), parameAnnotationClass.getKey())
-                        .addStatement("$T.i($S, (($N) activity).$N + $S)", log, "inject", className, parameAnnotationClass.getParameName(), "");
+                injectDataBuilder.addStatement("(($T) activity).$N = activity.getIntent().getStringExtra($S)",
+                        className, parameAnnotationClass.getParameName(), parameAnnotationClass.getKey());
             }
 
             //组装
             injectClassBuilder.addMethod(injectDataBuilder.build());
 
-            String packageName = elementUtils.getPackageOf(parameAnnatationClasses.get(0).getmParameElement()).getQualifiedName().toString();
+            String packageName = "com.example.zane.easyrouter_generated";
             //开始写入
             JavaFile javaFile = JavaFile.builder(packageName, injectClassBuilder.build())
                                         .build();

@@ -3,8 +3,10 @@ package com.example.zane.easyrouter;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -54,5 +56,10 @@ public class ActivityTwo extends AppCompatActivity{
         intent.putExtra(RETURN_DATA, "data from two");
         setResult(RESULT_CODE, intent);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

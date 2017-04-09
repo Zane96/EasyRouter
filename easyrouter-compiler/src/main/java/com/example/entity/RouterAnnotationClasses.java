@@ -33,7 +33,7 @@ import javax.lang.model.util.Elements;
 
 public class RouterAnnotationClasses {
 
-    private Map<String, Name> routers;
+    private Map<String, ClassName> routers;
     private List<RouterAnnotationClass> datas;
 
     private RouterAnnotationClasses(){
@@ -53,7 +53,7 @@ public class RouterAnnotationClasses {
     public void put(RouterAnnotationClass data){
         datas.add(data);
         String url = data.getUrl();
-        Name target = data.getClassName();
+        ClassName target = data.getClassName();
         routers.put(url, target);
     }
 
@@ -62,7 +62,7 @@ public class RouterAnnotationClasses {
      * @param url
      * @return
      */
-    public Name get(String url){
+    public ClassName get(String url){
         return routers.get(url);
     }
 
@@ -73,11 +73,11 @@ public class RouterAnnotationClasses {
      * @return
      */
     public String getUrl(String className) {
-        Set<Map.Entry<String, Name>> routerSet = routers.entrySet();
-        Iterator<Map.Entry<String, Name>> iterator = routerSet.iterator();
+        Set<Map.Entry<String, ClassName>> routerSet = routers.entrySet();
+        Iterator<Map.Entry<String, ClassName>> iterator = routerSet.iterator();
         String url = "";
         while (iterator.hasNext()) {
-            Map.Entry<String, Name> entry = iterator.next();
+            Map.Entry<String, ClassName> entry = iterator.next();
             if (entry.getValue().toString().equals(className)) {
                 url = RouterUtil.getAuthority(entry.getKey());
                 break;
@@ -120,7 +120,7 @@ public class RouterAnnotationClasses {
              */
             ParameterSpec url = ParameterSpec.builder(String.class, "url").build();
             MethodSpec queryTable = MethodSpec.methodBuilder("queryTable")
-                                            .addAnnotation(Override.class)
+                                            //.addAnnotation(Override.class)
                                             .addModifiers(Modifier.PUBLIC)
                                             .addParameter(url)
                                             .addStatement("Class<? extends Activity> target = (Class<? extends Activity>) routerTable.get(url)")
@@ -138,11 +138,11 @@ public class RouterAnnotationClasses {
              */
             MethodSpec.Builder initTableBuilder = MethodSpec.methodBuilder("initTable")
                                                           .addModifiers(Modifier.PRIVATE);
-            Set<Map.Entry<String, Name>> routerSet = routers.entrySet();
-            Iterator<Map.Entry<String, Name>> iterator = routerSet.iterator();
+            Set<Map.Entry<String, ClassName>> routerSet = routers.entrySet();
+            Iterator<Map.Entry<String, ClassName>> iterator = routerSet.iterator();
             while (iterator.hasNext()) {
-                Map.Entry<String, Name> entry = iterator.next();
-                initTableBuilder.addStatement("routerTable.put($S, $N.class)", entry.getKey(), entry.getValue());
+                Map.Entry<String, ClassName> entry = iterator.next();
+                initTableBuilder.addStatement("routerTable.put($S, $T.class)", entry.getKey(), entry.getValue());
             }
             MethodSpec initTable = initTableBuilder.build();
 
@@ -162,7 +162,7 @@ public class RouterAnnotationClasses {
                                              .build();
 
             //Table接口
-            ClassName table = ClassName.get("com.example.zane.router.router", "Table");
+            //ClassName table = ClassName.get("com.example.zane.router.router", "Table");
             //开始组装类
             TypeSpec routerTableClass = TypeSpec.classBuilder("EasyRouterTable")
                                                 .addModifiers(Modifier.PUBLIC)
@@ -172,10 +172,10 @@ public class RouterAnnotationClasses {
                                                 //.addMethod(getInstance)
                                                 //.addType(singletonHolder)
                                                 .addField(routerTable)
-                                                .addSuperinterface(table)
+                                                //.addSuperinterface(table)
                                                 .build();
 
-            String packageName = elementUtils.getPackageOf(datas.get(0).getElement()).getQualifiedName().toString();
+            String packageName = "com.example.zane.easyrouter_generated";
 
             //开始写入
             JavaFile javaFile = JavaFile.builder(packageName, routerTableClass)

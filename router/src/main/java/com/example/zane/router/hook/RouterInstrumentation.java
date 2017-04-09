@@ -10,6 +10,7 @@ import android.os.PersistableBundle;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.example.zane.easyrouter_generated.EasyRouterTable;
 import com.example.zane.router.EasyRouter;
 import com.example.zane.router.router.BaseRouter;
 import com.example.zane.router.router.Table;
@@ -30,12 +31,12 @@ public class RouterInstrumentation extends Instrumentation {
     private static final String TAG = RouterInstrumentation.class.getSimpleName();
 
     private Instrumentation mBase;
-    private Table routerTable;
+    private EasyRouterTable routerTable;
 
     //数据注入类的缓存
     private final Map<String, Inject> injectMap;
 
-    public RouterInstrumentation(Instrumentation mBase, Table routerTable) {
+    public RouterInstrumentation(Instrumentation mBase, EasyRouterTable routerTable) {
         this.mBase = mBase;
         this.routerTable = routerTable;
         this.injectMap = new HashMap<>();
