@@ -25,10 +25,9 @@ public class Hooker {
     /**
      * Hook startActivity/startActivityForResult两个方法
      * Hook activity的onCreat()方法
-     * @param table
      */
-    public static void hookRouter(Table table, Application context){
-        hookStart(table);
+    public static void hookRouter(Application context){
+        hookStart();
         OnCreatHooker.hookOnCreat(context, new OnCreatListener() {
             @Override
             public void beforeOnCreat(Activity activity, Bundle savedInstanceState) {
@@ -37,7 +36,7 @@ public class Hooker {
         });
     }
 
-    private static void hookStart(Table table) {
+    private static void hookStart() {
         //拿到app的单例ActivityThread实例
         Class<?> activityThread = null;
         try {
@@ -49,7 +48,7 @@ public class Hooker {
             Field mInstrumentation = activityThread.getDeclaredField("mInstrumentation");
             mInstrumentation.setAccessible(true);
             Instrumentation mBase = (Instrumentation) mInstrumentation.get(mCurrentThread);
-            RouterInstrumentation instrumenttation = new RouterInstrumentation(mBase, table);
+            RouterInstrumentation instrumenttation = new RouterInstrumentation(mBase);
             mInstrumentation.set(mCurrentThread, instrumenttation);
         } catch (Exception e) {
             e.printStackTrace();

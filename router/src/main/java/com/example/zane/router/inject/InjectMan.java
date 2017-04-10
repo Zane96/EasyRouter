@@ -30,10 +30,10 @@ public class InjectMan {
     public void inject(Activity activity, Bundle savedInstanceState) {
         //开始进行传递数据的注入
         String className = activity.getIntent().getStringExtra(BaseRouter.INJECT_DATA);
-        String packageName = activity.getPackageName();
+        String packageName = "com.example.zane.easyrouter_generated";
 
         Inject inject = injectMap.get(className);
-        Boolean isClassFound = true;
+        boolean isClassFound = true;
         if (inject == null) {
             try {
                 Class<?> injectClass = Class.forName(String.format("%s.%s$$Inject", packageName, className));

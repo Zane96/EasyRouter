@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.zane.easyrouter_generated.EasyRouterTable;
 import com.example.zane.router.inject.Inject;
 import com.example.zane.router.router.BaseRouter;
 import com.example.zane.router.router.Table;
@@ -28,11 +29,11 @@ public class RouterInstrumentation extends Instrumentation {
     private static final String TAG = RouterInstrumentation.class.getSimpleName();
 
     private Instrumentation mBase;
-    private Table routerTable;
+    private EasyRouterTable routerTable;
 
-    public RouterInstrumentation(Instrumentation mBase, Table routerTable) {
+    public RouterInstrumentation(Instrumentation mBase) {
         this.mBase = mBase;
-        this.routerTable = routerTable;
+        this.routerTable = new EasyRouterTable();
     }
 
     public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Activity t,

@@ -2,6 +2,7 @@ package com.example.zane.router;
 
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
@@ -32,8 +33,8 @@ public class EasyRouter {
     /**
      * 全局hook
      */
-    public static void hook(){
-        Hooker.hookRouter();
+    public static void hook(Application context){
+        Hooker.hookRouter(context);
     }
 
     private EasyRouter(){
