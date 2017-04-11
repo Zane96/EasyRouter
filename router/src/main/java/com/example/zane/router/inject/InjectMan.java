@@ -46,7 +46,7 @@ public class InjectMan {
             }
         }
 
-        if (isClassFound){
+        if (inject != null){
             inject.injectData(activity);
         }
     }

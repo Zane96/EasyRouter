@@ -30,4 +30,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':easyrouter-annotation')
     provided project(':easyrouter-generated')
+    compile 'com.google.code.gson:gson:2.7'
 }

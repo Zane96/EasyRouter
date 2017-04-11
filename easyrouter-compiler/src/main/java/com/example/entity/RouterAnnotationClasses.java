@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import com.example.Constant;
 import com.example.Route;
 import com.example.RouterUtil;
 import com.squareup.javapoet.ClassName;
@@ -175,12 +176,9 @@ public class RouterAnnotationClasses {
                                                 //.addSuperinterface(table)
                                                 .build();
 
-            String packageName = "com.example.zane.easyrouter_generated";
-
+            String packageName = Constant.GENERATED_PACKAGENAME;
             //开始写入
-            JavaFile javaFile = JavaFile.builder(packageName, routerTableClass)
-                                        .build();
-
+            JavaFile javaFile = JavaFile.builder(packageName, routerTableClass).build();
             javaFile.writeTo(filer);
         }
     }

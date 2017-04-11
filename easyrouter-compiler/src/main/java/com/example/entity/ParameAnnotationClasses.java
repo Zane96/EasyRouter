@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import com.example.Constant;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -79,37 +80,36 @@ public class ParameAnnotationClasses {
 
             //构建类
             //Inject接口
-            ClassName inject = ClassName.get("com.example.zane.router.inject", "Inject");
+            ClassName inject = ClassName.get(Constant.INJECT_PACKAGENAME, "Inject");
             String urlClassName = RouterAnnotationClasses.getInstance().getUrl(className.toString());
             TypeSpec.Builder injectClassBuilder = TypeSpec.classBuilder(String.format("%s$$Inject", urlClassName))
                                                           .addSuperinterface(inject)
                                                           .addModifiers(Modifier.PUBLIC);
 
-            /**
-             * public void injectData(Activity activity){
-             ((xxxActivity) activity).data = activity.getIntent().getString("data");
-             ....
-             }
-             */
-            ClassName activity = ClassName.get("android.app", "Activity");
-            MethodSpec.Builder injectDataBuilder = MethodSpec.methodBuilder("injectData")
-                                                           .addModifiers(Modifier.PUBLIC)
-                                                           .addAnnotation(Override.class)
-                                                           .addParameter(activity, "activity");
+            addInjectMethod(injectClassBuilder, parameAnnatationClasses, className);
 
-            for (ParameAnnotationClass parameAnnotationClass : parameAnnatationClasses) {
-                injectDataBuilder.addStatement("(($T) activity).$N = activity.getIntent().getStringExtra($S)",
-                        className, parameAnnotationClass.getParameName(), parameAnnotationClass.getKey());
-            }
-
-            //组装
-            injectClassBuilder.addMethod(injectDataBuilder.build());
-
-            String packageName = "com.example.zane.easyrouter_generated";
-            //开始写入
-            JavaFile javaFile = JavaFile.builder(packageName, injectClassBuilder.build())
-                                        .build();
+            String packageName = Constant.GENERATED_PACKAGENAME;
+            JavaFile javaFile = JavaFile.builder(packageName, injectClassBuilder.build()).build();
             javaFile.writeTo(filer);
         }
+    }
+
+    /**
+     * public void injectData(Activity activity){
+            ((xxxActivity) activity).data = activity.getIntent().getString("data");
+     }
+     */
+    private void addInjectMethod(TypeSpec.Builder builder, List<ParameAnnotationClass> parameAnnatationClasses, ClassName className) {
+        ClassName activity = ClassName.get("android.app", "Activity");
+        MethodSpec.Builder injectDataBuilder = MethodSpec.methodBuilder("injectData")
+                                                       .addModifiers(Modifier.PUBLIC)
+                                                       .addAnnotation(Override.class)
+                                                       .addParameter(activity, "activity");
+        for (ParameAnnotationClass parameAnnotationClass : parameAnnatationClasses) {
+            injectDataBuilder.addStatement("(($T) activity).$N = activity.getIntent().getStringExtra($S)",
+                    className, parameAnnotationClass.getParameName(), parameAnnotationClass.getKey());
+        }
+
+        builder.addMethod(injectDataBuilder.build());
     }
 }

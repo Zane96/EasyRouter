@@ -15,6 +15,6 @@ public class App extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        EasyRouter.hook(this);
+        EasyRouter.init(this);
     }
 }
