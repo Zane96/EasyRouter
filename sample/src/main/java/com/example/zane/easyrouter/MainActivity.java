@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //EasyRouter.hook(this, new EasyRouterTable());
-
         findViewById(R.id.button_start_activitytwo_foresult).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EasyRouter.route(MainActivity.this, "activity://two");
-                //startActivity(new Intent(MainActivity.this, ActivityTwo.class));
             }
         });
 
