@@ -2,7 +2,7 @@
 
 # EasyRouter
 
-EasyRouter是一个利用URL去进行Activity，Web页面跳转的路由框架。自动注入Activity之间传递的数据，减少了数据传递时Key的定义。使用回调的API去接受Activity返回的数据，更方便的去获取反馈数据
+EasyRouter是一个利用URL去进行Activity，Web页面跳转的路由框架。自动注入Activity之间传递的数据，减少了数据传递时Key的定义。使用回调的API去接受Activity返回的数据，更方便的去获取反馈数据。
 
 ## 使用
 
