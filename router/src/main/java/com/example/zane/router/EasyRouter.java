@@ -6,6 +6,9 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.zane.easyrouter_generated.EasyRouterTable;
+import com.example.zane.router.converter.Converter;
+import com.example.zane.router.converter.GsonConventerFactory;
 import com.example.zane.router.hook.Hooker;
 import com.example.zane.router.result.ActivityResultEngine;
 import com.example.zane.router.result.OnActivityResultListener;
@@ -23,69 +26,42 @@ import com.example.zane.router.router.Table;
 
 public class EasyRouter {
 
-    //activity路由
-    private static final String ACTIVITY = "activity://";
-    //网页路由
-    private static final String HTTP = "http://";
-    private static final String HTTPS = "https://";
+    public static void init(Application context){
+        init(context, GsonConventerFactory.creat());
+    }
 
     /**
      * 全局hook
-     * @param table
      */
-    public static void hook(Application context, Table table){
-        Hooker.hookRouter(table, context);
-    }
-
-    private EasyRouter(){
+    public static void init(Application context, Converter.Factory factory){
+        Hooker.hookRouter(context);
+        EasyRouterSet.setConverterFactory(factory);
     }
 
     /**
-     * 不传递参数的路由
+     *
      * @param context
-     * @param url
+     * @param message
      */
-    public static void route(Context context, String url){
-        BaseRouter router = getRouterFromScheme(url);
-        router.route(context, url);
-    }
-
-    /**
-     * 带参数的路由跳转
-     * @param context
-     * @param url
-     * @param rawIntent
-     */
-    public static void route(Context context, String url, Intent rawIntent){
-        BaseRouter router = getRouterFromScheme(url);
-        router.route(context, url, rawIntent);
+    public static void route(Context context, Message message){
+        BaseRouter router = findRouterFromScheme(message);
+        router.route(context, message);
     }
 
     /**
      * 不带参数的startActivityForResult
      * @param context
-     * @param url
+     * @param message
      * @param requestCode
      */
-    public static void routeForResult(Activity context, String url, int requestCode, OnActivityResultListener listener){
+    public static void routeForResult(Activity context, Message message, int requestCode, OnActivityResultListener listener){
         ActivityRouter router = new ActivityRouter();
-        router.startActivityForResult(context, url, requestCode, listener);
+        router.startActivityForResult(context, message, requestCode, listener);
     }
 
-    /**
-     * 带参数的startActivityForResult
-     * @param context
-     * @param url
-     * @param rawIntent
-     * @param requestCode
-     */
-    public static void routeForResult(Activity context, String url, Intent rawIntent, int requestCode, OnActivityResultListener listener){
-        ActivityRouter router = new ActivityRouter();
-        router.startActivityForResult(context, url, rawIntent, requestCode, listener);
-    }
 
-    private static BaseRouter getRouterFromScheme(String url){
-        if (ACTIVITY.equals(url.substring(0, 11))){
+    private static BaseRouter findRouterFromScheme(Message message){
+        if (Constant.ACTIVITY.equals(message.getUrl().getScheme())){
             return new ActivityRouter();
         }
         return new HttpRouter();

@@ -3,9 +3,10 @@ package com.example.zane.router.hook;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Instrumentation;
+import android.os.Bundle;
 
 
-import com.example.zane.easyrouter_generated.EasyRouterTable;
+import com.example.zane.router.inject.InjectMan;
 import com.example.zane.router.router.Table;
 
 import java.lang.reflect.Field;
@@ -19,31 +20,23 @@ import java.lang.reflect.Method;
 
 public class Hooker {
 
-//    public static void hookRouter(Activity activity, Table table){
-//        Class<?> activityClass = null;
-//        try {
-//            Class appCompatActivityClass = Class.forName("android.support.v7.app.AppCompatActivity");
-//            Method isSamePackage = appCompatActivityClass.getDeclaredMethod("inSamePackage");
-//            isSamePackage.setAccessible(true);
-//            if ((Boolean) isSamePackage.invoke(appCompatActivityClass, activity.getClass())){
-//                activityClass = activity.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass();
-//            } else {
-//                activityClass = activity.getClass().getSuperclass();
-//            }
-//            Field mInstrumentation = activityClass.getDeclaredField("mInstrumentation");
-//            mInstrumentation.setAccessible(true);
-//            Instrumentation mBase = (Instrumentation) mInstrumentation.get(activity);
-//            RouterInstrumentation instrumenttation = new RouterInstrumentation(mBase, table);
-//            mInstrumentation.set(activity, instrumenttation);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private static final InjectMan injectMan = new InjectMan();
 
     /**
      * Hook startActivity/startActivityForResult两个方法
+     * Hook activity的onCreat()方法
      */
-    public static void hookRouter(){
+    public static void hookRouter(Application context){
+        hookStart();
+        OnCreatHooker.hookOnCreat(context, new OnCreatListener() {
+            @Override
+            public void beforeOnCreat(Activity activity, Bundle savedInstanceState) {
+                injectMan.inject(activity, savedInstanceState);
+            }
+        });
+    }
+
+    private static void hookStart() {
         //拿到app的单例ActivityThread实例
         Class<?> activityThread = null;
         try {
@@ -55,7 +48,7 @@ public class Hooker {
             Field mInstrumentation = activityThread.getDeclaredField("mInstrumentation");
             mInstrumentation.setAccessible(true);
             Instrumentation mBase = (Instrumentation) mInstrumentation.get(mCurrentThread);
-            RouterInstrumentation instrumenttation = new RouterInstrumentation(mBase, new EasyRouterTable());
+            RouterInstrumentation instrumenttation = new RouterInstrumentation(mBase);
             mInstrumentation.set(mCurrentThread, instrumenttation);
         } catch (Exception e) {
             e.printStackTrace();
