@@ -23,20 +23,20 @@ import javax.lang.model.util.Elements;
  * Blog: zane96.github.io
  */
 
-public class ParameAnnotationClasses {
+public class ParameAnnotationGenerator {
 
     //保持一个Activity名字和ParameAnnotationClass的映射关系
     private Map<ClassName, List<ParameAnnotationClass>> mParameAnnotationMap;
 
-    private ParameAnnotationClasses(){
+    private ParameAnnotationGenerator(){
         mParameAnnotationMap = new HashMap<>();
     }
 
     private static class SingletonHolder{
-        private static final ParameAnnotationClasses instance = new ParameAnnotationClasses();
+        private static final ParameAnnotationGenerator instance = new ParameAnnotationGenerator();
     }
 
-    public static ParameAnnotationClasses getInstance(){
+    public static ParameAnnotationGenerator getInstance(){
         return SingletonHolder.instance;
     }
 
@@ -78,15 +78,8 @@ public class ParameAnnotationClasses {
             ClassName className = entry.getKey();
             List<ParameAnnotationClass> parameAnnatationClasses = entry.getValue();
 
-            //构建类
-            //Inject接口
-            ClassName inject = ClassName.get(Constant.INJECT_PACKAGENAME, "Inject");
-            String urlClassName = RouterAnnotationClasses.getInstance().getUrl(className.toString());
-            TypeSpec.Builder injectClassBuilder = TypeSpec.classBuilder(String.format("%s$$Inject", urlClassName))
-                                                          .addSuperinterface(inject)
-                                                          .addModifiers(Modifier.PUBLIC);
-
-            addInjectMethod(injectClassBuilder, parameAnnatationClasses, className);
+            MethodSpec injectMethod = getInjectMethod(parameAnnatationClasses, className);
+            TypeSpec.Builder injectClassBuilder = getClassTyoe(className, injectMethod);
 
             String packageName = Constant.GENERATED_PACKAGENAME;
             JavaFile javaFile = JavaFile.builder(packageName, injectClassBuilder.build()).build();
@@ -94,12 +87,22 @@ public class ParameAnnotationClasses {
         }
     }
 
+    private TypeSpec.Builder getClassTyoe(ClassName className, MethodSpec injectMethod) {
+        ClassName inject = ClassName.get(Constant.INJECT_PACKAGENAME, "Inject");
+        String urlClassName = RouterAnnotationGenerator.getInstance().getUrl(className.toString());
+        TypeSpec.Builder injectClassBuilder = TypeSpec.classBuilder(String.format("%s$$Inject", urlClassName))
+                                                      .addSuperinterface(inject)
+                                                      .addModifiers(Modifier.PUBLIC);
+        injectClassBuilder.addMethod(injectMethod);
+        return injectClassBuilder;
+    }
+
     /**
      * public void injectData(Activity activity){
             ((xxxActivity) activity).data = activity.getIntent().getString("data");
      }
      */
-    private void addInjectMethod(TypeSpec.Builder builder, List<ParameAnnotationClass> parameAnnatationClasses, ClassName className) {
+    private MethodSpec getInjectMethod(List<ParameAnnotationClass> parameAnnatationClasses, ClassName className) {
         ClassName activity = ClassName.get("android.app", "Activity");
         MethodSpec.Builder injectDataBuilder = MethodSpec.methodBuilder("injectData")
                                                        .addModifiers(Modifier.PUBLIC)
@@ -110,6 +113,6 @@ public class ParameAnnotationClasses {
                     className, parameAnnotationClass.getParameName(), parameAnnotationClass.getKey());
         }
 
-        builder.addMethod(injectDataBuilder.build());
+        return injectDataBuilder.build();
     }
 }
