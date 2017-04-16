@@ -11,7 +11,10 @@ import android.widget.Toast;
 
 import com.example.Route;
 import com.example.zane.router.EasyRouter;
+import com.example.zane.router.message.Message;
+import com.example.zane.router.message.MessageBuilder;
 import com.example.zane.router.result.OnActivityResultListener;
+import com.google.gson.Gson;
 
 @Route("activity://main")
 public class MainActivity extends AppCompatActivity {
@@ -26,32 +29,29 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_start_activitytwo_foresult).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("data", "data from main");
-                EasyRouter.routeForResult(MainActivity.this, "activity://two", intent, REQUEST_CODE, new OnActivityResultListener() {
-                    @Override
-                    public void onActivityResult(int resultCode, Intent data) {
-                        String result = data.getStringExtra(ActivityTwo.RETURN_DATA);
-                        Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
-                    }
-                });
+
             }
         });
 
         findViewById(R.id.button_start_activitytwo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EasyRouter.route(MainActivity.this, "activity://two");
+                Message message = new MessageBuilder()
+                                          .setAddress("activity://two")
+                                          .addParam("data", "haha", String.class)
+                                          .addParam("num", 1, Integer.class)
+                                          .addHeader("action", "asdaas")
+                                          .build();
+                EasyRouter.route(MainActivity.this, message);
             }
         });
 
         findViewById(R.id.button_browser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EasyRouter.route(MainActivity.this, "http://www.baidu.com");
+
             }
         });
-
 
     }
 }

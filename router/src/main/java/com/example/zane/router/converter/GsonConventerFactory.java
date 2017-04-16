@@ -1,5 +1,6 @@
 package com.example.zane.router.converter;
 
+import com.example.zane.router.exception.ConverterExpection;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -24,12 +25,12 @@ public class GsonConventerFactory extends Converter.Factory {
     }
 
     @Override
-    public Converter<?, String> encodeConverter(Type type, Object object) {
+    public Converter<Object, String> encodeConverter(Type type) {
         return new GsonEncodeConverter<>(type);
     }
 
     @Override
-    public Converter<String, ?> decodeConverter(Type type, String string) {
+    public Converter<String, Object> decodeConverter(Type type) {
         return new GsonDecodeConventer<>(type);
     }
 
@@ -41,7 +42,7 @@ public class GsonConventerFactory extends Converter.Factory {
         }
 
         @Override
-        public String convert(T value) throws IOException {
+        public String convert(T value) throws ConverterExpection {
             return gson.toJson(value, type);
         }
     }
@@ -54,7 +55,7 @@ public class GsonConventerFactory extends Converter.Factory {
         }
 
         @Override
-        public T convert(String value) throws IOException {
+        public T convert(String value) throws ConverterExpection {
             return gson.fromJson(value, type);
         }
     }

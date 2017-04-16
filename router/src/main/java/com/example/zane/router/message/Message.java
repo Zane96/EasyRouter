@@ -1,12 +1,21 @@
-package com.example.zane.router;
+package com.example.zane.router.message;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.zane.router.EasyRouterSet;
+import com.example.zane.router.exception.ConverterExpection;
+import com.example.zane.router.utils.ZLog;
+
+import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import static com.example.zane.router.message.MessageBuilder.TAG_ADDRESS_SUFFIX;
+import static com.example.zane.router.message.MessageBuilder.TAG_PARAMS_DIVIDER;
+import static com.example.zane.router.message.MessageBuilder.TAG_PARAMS_OPERATOR;
+import static com.example.zane.router.message.MessageBuilder.TAG_SCHEME_SUFFIX;
 
 /**
  * 报文的实体封装类
@@ -31,23 +40,18 @@ import java.util.Set;
 
 public class Message implements Parcelable {
 
-    private static final String TAG_SCHEME_SUFFIX = "://";
-    private static final String TAG_PARAMS_DIVIDER = "&";
-    private static final String TAG_PARAMS_OPERATOR = "=";
-    private static final String TAG_ADDRESS_SUFFIX = "?";
-
     private Url url;
     private Header header;
     private Body body;
 
-    private Message(Builder builder) {
+    public Message(MessageBuilder builder) {
         header = new Header(builder.headers);
         body = new Body(builder.params);
         url = new Url(builder.scheme, builder.authority);
     }
 
-    public Builder newBuilder(){
-        Builder builder = new Builder();
+    public MessageBuilder newBuilder(){
+        MessageBuilder builder = new MessageBuilder();
         builder.scheme = url.getScheme();
         builder.authority = url.getAuthority();
         builder.params = body.getDatas();
@@ -68,58 +72,7 @@ public class Message implements Parcelable {
     }
 
     //----------------------------------------------------------------------------------------------
-
-    public static class Builder {
-        private String scheme;
-        private String authority;
-        private String address;
-        private Map<String, String> params;
-        private Map<String, String> headers;
-
-        public Builder() {
-            params = new HashMap<>();
-        }
-
-        public Builder addParam(String key, String value) {
-            params.put(key, value);
-            return this;
-        }
-
-        public Builder addHeader(String key, String value) {
-            headers.put(key, value);
-            return this;
-        }
-
-        public Builder setScheme(String scheme) {
-            this.scheme = scheme;
-            return this;
-        }
-
-        public Builder setAuthority(String authority) {
-            this.authority = authority;
-            return this;
-        }
-
-        public Builder setAddress(String address) {
-            //寻找scheme的结束地址 与 authority的起始地址
-            int schemeEndPos = address.indexOf(TAG_SCHEME_SUFFIX);
-            int authorityStartPos = schemeEndPos + TAG_SCHEME_SUFFIX.length();
-            if (!address.contains(TAG_SCHEME_SUFFIX)) {
-                schemeEndPos = 0;
-                authorityStartPos = 0;
-            }
-            setScheme(address.substring(0,schemeEndPos));
-            setAuthority(address.substring(authorityStartPos,address.length()));
-            return this;
-        }
-
-        public Message build() {
-            return new Message(this);
-        }
-    }
-
-    //----------------------------------------------------------------------------------------------
-    class Url implements Parcelable {
+    public static class Url implements Parcelable {
 
         private String baseUrl;
         private String scheme;
@@ -170,7 +123,7 @@ public class Message implements Parcelable {
             this.authority = in.readString();
         }
 
-        public final Creator<Url> CREATOR = new Creator<Url>() {
+        public static final Creator<Url> CREATOR = new Creator<Url>() {
             @Override
             public Url createFromParcel(Parcel source) {
                 return new Url(source);
@@ -184,7 +137,7 @@ public class Message implements Parcelable {
     }
 
     //----------------------------------------------------------------------------------------------
-    class Header implements Parcelable {
+    public static class Header implements Parcelable {
         private Map<String, String> headers;
 
         public Header(Map<String, String> headers) {
@@ -224,7 +177,7 @@ public class Message implements Parcelable {
             }
         }
 
-        public final Creator<Header> CREATOR = new Creator<Header>() {
+        public static final Creator<Header> CREATOR = new Creator<Header>() {
             @Override
             public Header createFromParcel(Parcel source) {
                 return new Header(source);
@@ -237,7 +190,9 @@ public class Message implements Parcelable {
         };
     }
 
-    class Body implements Parcelable {
+    //----------------------------------------------------------------------------------------------
+
+    public static class Body implements Parcelable {
         private Map<String, String> datas;
 
         public Body(Map<String, String> datas) {
@@ -277,7 +232,7 @@ public class Message implements Parcelable {
             }
         }
 
-        public final Creator<Body> CREATOR = new Creator<Body>() {
+        public static final Creator<Body> CREATOR = new Creator<Body>() {
             @Override
             public Body createFromParcel(Parcel source) {
                 return new Body(source);
@@ -368,7 +323,7 @@ public class Message implements Parcelable {
 
     @Override
     public String toString() {
-        return url.toString() + TAG_ADDRESS_SUFFIX + header.toString() + body.toString();
+        return url.toString() + TAG_ADDRESS_SUFFIX + header.toString() + TAG_ADDRESS_SUFFIX + body.toString();
     }
 
     @Override

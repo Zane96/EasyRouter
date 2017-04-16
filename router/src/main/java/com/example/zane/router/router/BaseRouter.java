@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.zane.router.message.Message;
+
 /**
  * Created by Zane on 2016/12/23.
  * Email: zanebot96@gmail.com
@@ -13,23 +15,13 @@ import android.content.Intent;
 
 public abstract class BaseRouter {
 
-    public static final String ROUTER_URL = "router_url";
-    public static final String INJECT_DATA = "inject_data";
+    public static final String ROUTER_MESSAGE = "router_message";
 
-    public void route (Context context, String url){
+    public void route (Context context, Message message){
         Intent intent = new Intent();
-        intent.putExtra(ROUTER_URL, url);
-        intent.putExtra(INJECT_DATA, getTargetClassName(url));
+        intent.putExtra(ROUTER_MESSAGE, message);
         isAppContext(context, intent);
-        startRoute(context, url, intent);
-    }
-
-    public void route (Context context, String url, Intent rawIntent){
-        Intent intent = new Intent(rawIntent);
-        intent.putExtra(ROUTER_URL, url);
-        intent.putExtra(INJECT_DATA, getTargetClassName(url));
-        isAppContext(context, intent);
-        startRoute(context, url, intent);
+        startRoute(context, intent);
     }
 
     /**
@@ -47,5 +39,5 @@ public abstract class BaseRouter {
         }
     }
 
-    abstract void startRoute(Context context, String url, Intent rawIntent);
+    abstract void startRoute(Context context, Intent rawIntent);
 }

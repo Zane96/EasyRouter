@@ -1,7 +1,7 @@
 package com.example;
 
 import com.example.entity.ParameAnnotationClass;
-import com.example.entity.ParameAnnotationClasses;
+import com.example.entity.ParameAnnotationGenerator;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 
@@ -28,7 +28,7 @@ public class zParameProcess extends BaseProcess{
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-        ParameAnnotationClasses.getInstance().clear();
+        ParameAnnotationGenerator.getInstance().clear();
 
         for (Element parameElement : roundEnv.getElementsAnnotatedWith(Param.class)){
             if (parameElement.getKind() != ElementKind.FIELD){
@@ -36,10 +36,10 @@ public class zParameProcess extends BaseProcess{
                 return true;
             }
             ParameAnnotationClass parameAnnotationClass = new ParameAnnotationClass(parameElement);
-            ParameAnnotationClasses.getInstance().put(getClassName(parameElement), parameAnnotationClass);
+            ParameAnnotationGenerator.getInstance().put(getClassName(parameElement), parameAnnotationClass);
         }
         try {
-            ParameAnnotationClasses.getInstance().generateCode(elementUtils, filer);
+            ParameAnnotationGenerator.getInstance().generateCode(elementUtils, filer);
         } catch (IOException e) {
             e.printStackTrace();
         }

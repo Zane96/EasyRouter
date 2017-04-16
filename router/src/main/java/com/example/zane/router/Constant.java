@@ -8,8 +8,8 @@ package com.example.zane.router;
 
 public class Constant {
     //activity路由
-    public static final String ACTIVITY = "activity://";
+    public static final String ACTIVITY = "activity";
     //网页路由
-    public static final String HTTP = "http://";
-    public static final String HTTPS = "https://";
+    public static final String HTTP = "http";
+    public static final String HTTPS = "https";
 }

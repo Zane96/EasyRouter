@@ -1,5 +1,7 @@
 package com.example.zane.router.converter;
 
+import com.example.zane.router.exception.ConverterExpection;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 
@@ -19,24 +21,22 @@ public interface Converter<F, T> {
      * @return
      * @throws IOException
      */
-    T convert(F value) throws IOException;
+    T convert(F value) throws ConverterExpection;
 
     abstract class Factory {
 
         /**
          * Creat encodeConventer
          * @param type
-         * @param object
          * @return
          */
-        public abstract Converter<?, String> encodeConverter(Type type, Object object);
+        public abstract Converter<Object, String> encodeConverter(Type type);
 
         /**
          * Creat decodeConventer
          * @param type
-         * @param string
          * @return
          */
-        public abstract Converter<String, ?> decodeConverter(Type type, String string);
+        public abstract Converter<String, Object> decodeConverter(Type type);
     }
 }

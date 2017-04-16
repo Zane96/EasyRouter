@@ -29,7 +29,7 @@ public class InjectMan {
      */
     public void inject(Activity activity, Bundle savedInstanceState) {
         //开始进行传递数据的注入
-        String className = activity.getIntent().getStringExtra(BaseRouter.INJECT_DATA);
+        String className = "";
         String packageName = "com.example.zane.easyrouter_generated";
 
         Inject inject = injectMap.get(className);

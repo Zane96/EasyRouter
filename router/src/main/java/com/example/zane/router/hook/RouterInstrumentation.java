@@ -6,17 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.zane.easyrouter_generated.EasyRouterTable;
-import com.example.zane.router.inject.Inject;
+import com.example.zane.router.message.Message;
 import com.example.zane.router.router.BaseRouter;
-import com.example.zane.router.router.Table;
+import com.example.zane.router.utils.ZLog;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Zane on 2016/11/28.
@@ -38,7 +34,9 @@ public class RouterInstrumentation extends Instrumentation {
 
     public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Activity t,
                                             Intent rawIntent, int requestCode, Bundle options){
-        String url = rawIntent.getStringExtra(BaseRouter.ROUTER_URL);
+
+        Message message = rawIntent.getParcelableExtra(BaseRouter.ROUTER_MESSAGE);
+        Message.Url url = message.getUrl();
         Method execStart = null;
 
         try {
@@ -49,29 +47,23 @@ public class RouterInstrumentation extends Instrumentation {
             e.printStackTrace();
         }
 
-        if ("activity://".equals(url.substring(0, 11))){
-            try {
-                Class target = routerTable.queryTable(url);
+        try {
+            if ("activity".equals(url.getScheme())){
+                Class target = routerTable.queryTable(url.toString());
                 Intent intent = new Intent(who, target);
                 intent.putExtras(rawIntent.getExtras());
+                ZLog.i("RouterInstrumentation", target+"");
 
                 return (ActivityResult) execStart.invoke(mBase, who, contextThread, token, t,
                         intent, requestCode, options);
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
+            } else {
                 return (ActivityResult) execStart.invoke(mBase, who, contextThread, token, t,
                         rawIntent, requestCode, options);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
             }
+        }catch (Exception e) {
+            ZLog.i("RouterInstrumentation", e.getMessage());
         }
+
         return null;
     }
 }

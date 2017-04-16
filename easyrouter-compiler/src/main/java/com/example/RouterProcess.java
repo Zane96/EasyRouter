@@ -1,7 +1,7 @@
 package com.example;
 
 import com.example.entity.RouterAnnotationClass;
-import com.example.entity.RouterAnnotationClasses;
+import com.example.entity.RouterAnnotationGenerator;
 import com.google.auto.service.AutoService;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class RouterProcess extends BaseProcess {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv){
-        RouterAnnotationClasses.getInstance().clear();
+        RouterAnnotationGenerator.getInstance().clear();
 
         for (Element anntatedElement : roundEnv.getElementsAnnotatedWith(Route.class)){
             //如果不是类类型的话就要报错
@@ -34,10 +34,10 @@ public class RouterProcess extends BaseProcess {
                 return true;
             }
             RouterAnnotationClass routerAnntationClass = new RouterAnnotationClass(anntatedElement);
-            RouterAnnotationClasses.getInstance().put(routerAnntationClass);
+            RouterAnnotationGenerator.getInstance().put(routerAnntationClass);
         }
         try {
-            RouterAnnotationClasses.getInstance().generateCode(elementUtils, filer);
+            RouterAnnotationGenerator.getInstance().generateCode(elementUtils, filer);
         } catch (IOException e) {
             System.out.print(e);
         }

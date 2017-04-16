@@ -27,7 +27,7 @@ public class FragmentTwo extends Fragment{
         view.findViewById(R.id.text_fragment_two).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EasyRouter.route(getActivity(), "activity://three");
+                //EasyRouter.route(getActivity(), "activity://three");
             }
         });
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.zane.router.message.Message;
 import com.example.zane.router.result.ActivityResultEngine;
 import com.example.zane.router.result.OnActivityResultListener;
 
@@ -16,37 +17,21 @@ import com.example.zane.router.result.OnActivityResultListener;
 public class ActivityRouter extends BaseRouter{
 
     @Override
-    void startRoute(Context context, String url, Intent rawIntent) {
+    void startRoute(Context context, Intent rawIntent) {
         context.startActivity(rawIntent);
     }
 
     /**
-     * 不带参数的startActivityForResult()
+     * startActivityForResult()
      * 这里不应该再是activity去启动组件而是由fragment去启动并hook
      * @param activity 可以确定是Activity的context
-     * @param url
+     * @param message
      * @param requestCode
      */
-    public void startActivityForResult(Activity activity, String url, int requestCode, OnActivityResultListener listener){
+    public void startActivityForResult(Activity activity, Message message, int requestCode, OnActivityResultListener listener){
         Intent intent = new Intent();
-        intent.putExtra(ROUTER_URL, url);
-        intent.putExtra(INJECT_DATA, getTargetClassName(url));
+        intent.putExtra(ROUTER_MESSAGE, message);
         ActivityResultEngine.startHookFragment(activity, requestCode, intent, listener);
-        //activity.startActivityForResult(intent, requestCode);
-    }
-
-    /**
-     * 带参数的startActivityForResult()
-     * @param activity
-     * @param url
-     * @param rawIntent
-     * @param requestCode
-     */
-    public void startActivityForResult(Activity activity, String url, Intent rawIntent, int requestCode, OnActivityResultListener listener){
-        Intent intent = new Intent(rawIntent);
-        intent.putExtra(ROUTER_URL, url);
-        intent.putExtra(INJECT_DATA, getTargetClassName(url));
-        ActivityResultEngine.startHookFragment(activity, requestCode, intent, listener);
-        //activity.startActivityForResult(intent, requestCode);
+        activity.startActivityForResult(intent, requestCode);
     }
 }
