@@ -32,6 +32,5 @@ public class ActivityRouter extends BaseRouter{
         Intent intent = new Intent();
         intent.putExtra(ROUTER_MESSAGE, message);
         ActivityResultEngine.startHookFragment(activity, requestCode, intent, listener);
-        activity.startActivityForResult(intent, requestCode);
     }
 }

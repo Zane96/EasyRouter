@@ -5,9 +5,7 @@ import android.app.Application;
 import android.app.Instrumentation;
 import android.os.Bundle;
 
-
 import com.example.zane.router.inject.InjectMan;
-import com.example.zane.router.router.Table;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

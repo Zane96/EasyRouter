@@ -3,11 +3,6 @@ package com.example.zane.router.message;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.zane.router.EasyRouterSet;
-import com.example.zane.router.exception.ConverterExpection;
-import com.example.zane.router.utils.ZLog;
-
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -69,6 +64,30 @@ public class Message implements Parcelable {
 
     public Body getBody() {
         return body;
+    }
+
+    public void setUrl(Url url) {
+        this.url = url;
+    }
+
+    public void setHeader(Header header) {
+        this.header = header;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
+    public void removeUrl() {
+        url = null;
+    }
+
+    public void removeHeader() {
+        header = null;
+    }
+
+    public void removeBody() {
+        body = null;
     }
 
     //----------------------------------------------------------------------------------------------
@@ -245,7 +264,7 @@ public class Message implements Parcelable {
         };
     }
 
-    //----------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------
 
     private static String getString(String value) {
         return value == null ? "" : value;

@@ -44,7 +44,7 @@ public class RouterInstrumentation extends Instrumentation {
                     IBinder.class, Activity.class, Intent.class, int.class, Bundle.class);
             execStart.setAccessible(true);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            ZLog.e("RouterInstrumentation", e.getMessage());
         }
 
         try {
@@ -61,7 +61,7 @@ public class RouterInstrumentation extends Instrumentation {
                         rawIntent, requestCode, options);
             }
         }catch (Exception e) {
-            ZLog.i("RouterInstrumentation", e.getMessage());
+            ZLog.e("RouterInstrumentation", e.getMessage());
         }
 
         return null;

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Param;
@@ -27,19 +28,20 @@ public class ActivityTwo extends AppCompatActivity{
     public static final String RETURN_DATA = "return_code";
     public static final int RESULT_CODE = 2;
 
-//    @Param("data")
-//    public String data;
+    @Param("data")
+    public String data;
+    @Param("person")
+    public Person person;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two);
 
-        Message message = getIntent().getParcelableExtra("router_message");
-        ZLog.i("ActivityTwo", message.toString());
-
         //String data = getIntent().getStringExtra(MainActivity.DATA);
-        //Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
+        TextView mText = (TextView) findViewById(R.id.text_person);
+        mText.setText("age: " + person.getAge() + " name: " + person.getName());
 
         findViewById(R.id.button_two).setOnClickListener(new View.OnClickListener() {
             @Override

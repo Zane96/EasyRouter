@@ -3,7 +3,6 @@ package com.example.zane.router.converter;
 import com.example.zane.router.exception.ConverterExpection;
 import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 
 /**
@@ -26,7 +25,7 @@ public class GsonConventerFactory extends Converter.Factory {
 
     @Override
     public Converter<Object, String> encodeConverter(Type type) {
-        return new GsonEncodeConverter<>(type);
+        return new GsonEncodeConverter<Object>(type);
     }
 
     @Override

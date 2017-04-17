@@ -1,6 +1,5 @@
 package com.example.zane.router.router;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -22,15 +21,6 @@ public abstract class BaseRouter {
         intent.putExtra(ROUTER_MESSAGE, message);
         isAppContext(context, intent);
         startRoute(context, intent);
-    }
-
-    /**
-     * 从url中获取被启动组件的名字
-     * @param url
-     * @return
-     */
-    String getTargetClassName(String url){
-        return url.substring(11, url.length());
     }
 
     private void isAppContext(Context context, Intent intent){
