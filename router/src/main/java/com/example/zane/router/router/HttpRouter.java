@@ -20,7 +20,6 @@ public class HttpRouter extends BaseRouter{
         rawIntent.setAction(Intent.ACTION_VIEW);
         Uri contentUrl = Uri.parse(url);
         rawIntent.setData(contentUrl);
-        rawIntent.removeExtra(BaseRouter.ROUTER_MESSAGE);
         context.startActivity(Intent.createChooser(rawIntent, "选择一款浏览器"));
     }
 }

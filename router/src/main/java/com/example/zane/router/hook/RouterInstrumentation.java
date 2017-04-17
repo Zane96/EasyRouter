@@ -36,7 +36,11 @@ public class RouterInstrumentation extends Instrumentation {
                                             Intent rawIntent, int requestCode, Bundle options){
 
         Message message = rawIntent.getParcelableExtra(BaseRouter.ROUTER_MESSAGE);
-        Message.Url url = message.getUrl();
+        Message.Url url = null;
+        if (message != null) {
+            url = message.getUrl();
+        }
+
         Method execStart = null;
 
         try {
@@ -48,7 +52,7 @@ public class RouterInstrumentation extends Instrumentation {
         }
 
         try {
-            if ("activity".equals(url.getScheme())){
+            if (url != null){
                 Class target = routerTable.queryTable(url.toString());
                 Intent intent = new Intent(who, target);
                 intent.putExtras(rawIntent.getExtras());
