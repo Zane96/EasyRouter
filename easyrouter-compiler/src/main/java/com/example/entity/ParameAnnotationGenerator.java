@@ -104,14 +104,36 @@ public class ParameAnnotationGenerator {
      */
     private MethodSpec getInjectMethod(List<ParameAnnotationClass> parameAnnatationClasses, ClassName className) {
         ClassName activity = ClassName.get("android.app", "Activity");
-        MethodSpec.Builder injectDataBuilder = MethodSpec.methodBuilder("injectData")
+        ClassName message = ClassName.get("com.example.zane.router.message", "Message");
+        ClassName baseRouter = ClassName.get("com.example.zane.router.router", "BaseRouter");
+        ClassName datas = ClassName.get(Map.class);
+        ClassName converter = ClassName.get("com.example.zane.router.converter", "Converter");
+        ClassName easyRouterSet = ClassName.get("com.example.zane.router", "EasyRouterSet");
+        ClassName convertException = ClassName.get("com.example.zane.router.exception", "ConverterExpection");
+        ClassName zlog = ClassName.get("com.example.zane.router.utils", "ZLog");
+
+        MethodSpec.Builder injectDataBuilder = MethodSpec.methodBuilder("injectData").addAnnotation(Override.class)
                                                        .addModifiers(Modifier.PUBLIC)
-                                                       .addAnnotation(Override.class)
-                                                       .addParameter(activity, "activity");
+                                                       .addParameter(activity, "activity")
+                                                       .addStatement("$T message = activity.getIntent().getParcelableExtra($T.ROUTER_MESSAGE)", message, baseRouter)
+                                                       .addStatement("$T.Body body = message.getBody()", message)
+                                                       .addStatement("$T<String, String> datas = body.getDatas()", datas)
+                                                       .addStatement("$T.Factory factory = $T.getConverterFactory()", converter, easyRouterSet)
+                                                       .beginControlFlow("try");
+
         for (ParameAnnotationClass parameAnnotationClass : parameAnnatationClasses) {
-            injectDataBuilder.addStatement("(($T) activity).$N = activity.getIntent().getStringExtra($S)",
-                    className, parameAnnotationClass.getParameName(), parameAnnotationClass.getKey());
+            injectDataBuilder.addStatement("(($T) activity).$N = ($T) factory.decodeConverter($T.class).convert(datas.get($S))",
+                    className,
+                    parameAnnotationClass.getParameName(),
+                    parameAnnotationClass.getTypeName(),
+                    parameAnnotationClass.getTypeName(),
+                    parameAnnotationClass.getKey());
         }
+
+        injectDataBuilder.endControlFlow()
+                .beginControlFlow("catch ($T e)", convertException)
+                .addStatement("$T.e($S, e.getMessage())", zlog, className.toString() + "$$Inject")
+                .endControlFlow();
 
         return injectDataBuilder.build();
     }

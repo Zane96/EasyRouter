@@ -13,6 +13,7 @@ import com.example.zane.router.result.OnActivityResultListener;
 import com.example.zane.router.router.ActivityRouter;
 import com.example.zane.router.router.BaseRouter;
 import com.example.zane.router.router.HttpRouter;
+import com.example.zane.router.utils.ZLog;
 
 /**
  *
@@ -25,6 +26,7 @@ public class EasyRouter {
 
     public static void init(Application context){
         init(context, GsonConventerFactory.creat());
+        ZLog.setDebug(true);
     }
 
     /**

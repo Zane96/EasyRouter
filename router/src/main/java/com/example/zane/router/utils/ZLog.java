@@ -14,7 +14,7 @@ public final class ZLog {
 
     private ZLog(){}
 
-    public static void setDEBUG(boolean DEBUG) {
+    public static void setDebug(boolean DEBUG) {
         ZLog.DEBUG = DEBUG;
     }
 
@@ -22,6 +22,10 @@ public final class ZLog {
         if (DEBUG) {
             Log.i(key, message);
         }
+    }
+
+    public static void e(String key, String message) {
+        Log.e(key, message);
     }
 }
 

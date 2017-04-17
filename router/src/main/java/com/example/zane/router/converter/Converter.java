@@ -30,13 +30,13 @@ public interface Converter<F, T> {
          * @param type
          * @return
          */
-        public abstract Converter<Object, String> encodeConverter(Type type);
+        public abstract Converter<? super Object, String> encodeConverter(Type type);
 
         /**
          * Creat decodeConventer
          * @param type
          * @return
          */
-        public abstract Converter<String, Object> decodeConverter(Type type);
+        public abstract Converter<String, ? super Object> decodeConverter(Type type);
     }
 }

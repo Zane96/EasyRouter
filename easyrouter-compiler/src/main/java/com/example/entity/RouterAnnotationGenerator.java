@@ -1,7 +1,6 @@
 package com.example.entity;
 
 import com.example.Constant;
-import com.example.RouterUtil;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -77,7 +76,7 @@ public class RouterAnnotationGenerator {
         while (iterator.hasNext()) {
             Map.Entry<String, ClassName> entry = iterator.next();
             if (entry.getValue().toString().equals(className)) {
-                url = RouterUtil.getAuthority(entry.getKey());
+                url = getAuthority(entry.getKey());
                 break;
             }
         }
@@ -184,5 +183,14 @@ public class RouterAnnotationGenerator {
         return FieldSpec.builder(Map.class, "routerTable")
                                                 .addModifiers(Modifier.PRIVATE)
                                                 .build();
+    }
+
+    /**
+     * 获取url的authority
+     * @param url
+     * @return
+     */
+    private String getAuthority(String url){
+        return url.substring(url.indexOf(":") + 3, url.length());
     }
 }

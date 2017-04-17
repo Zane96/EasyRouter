@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.zane.router.EasyRouter;
+import com.example.zane.router.message.MessageBuilder;
 
 /**
  * Created by zane on 2017/1/15.
@@ -27,7 +28,9 @@ public class FragmentTwo extends Fragment{
         view.findViewById(R.id.text_fragment_two).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //EasyRouter.route(getActivity(), "activity://three");
+                EasyRouter.route(getActivity(), new MessageBuilder().setAddress("activity://three")
+                                                        .addParam("data", "data from two", String.class)
+                                                        .build());
             }
         });
     }
