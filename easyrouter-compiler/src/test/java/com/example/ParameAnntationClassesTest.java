@@ -1,7 +1,7 @@
 package com.example;
 
-import com.example.entity.ParameAnnotationClass;
-import com.example.entity.ParameAnnotationGenerator;
+import com.zane.easyrouter_compiler.entity.ParameAnnotationClass;
+import com.zane.easyrouter_compiler.entity.ParameAnnotationGenerator;
 
 import org.junit.Test;
 import org.mockito.Mockito;

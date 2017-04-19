@@ -6,12 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.zane.easyrouter.MainActivity">
+    tools:context="com.example.zane.easyrouter.com.zane.easyrouter.MainActivity">
 
     <Button
         android:text="跳转ActivityTwo回传参数"
         android:layout_margin="10dp"
         android:id="@+id/button_start_activitytwo_foresult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="跳转ActivityThree回传参数"
+        android:layout_margin="10dp"
+        android:id="@+id/button_start_activitythree_foresult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

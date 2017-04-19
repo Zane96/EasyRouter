@@ -5,10 +5,9 @@
               android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button_fragment_two"
-        android:text="无参数跳转ActivityThree"
-        android:gravity="center"
+        android:text="带参数返回"
+        android:id="@+id/button_return_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
