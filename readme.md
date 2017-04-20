@@ -2,14 +2,14 @@
 
 # EasyRouter
 
-EasyRouter是一个利用URL去进行Activity，Web页面跳转的路由框架。自动注入Activity跳转，返回时传递的数据。通过接口回调来取缔原生API对于启动Activity的返回回调。
+EasyRouter是一个简易的使用字符串进行Activity，Browser跳转的路由框架。
 
 ## Features
 + EasyRouter实现了通过字符串进行Activity之间跳转路由，通过APT在编译器实现路由表的构建，劫持了startActivity()进行动态路由
 + EasyRouter实现了Activity之间跳转，返回时的数据自动注入，完全屏蔽了原生的一套繁琐API
 + EasyRouter实现了通过字符串进程Browser的路由跳转
 + EasyRouter支持更换路由跳转时数据序列化的解析器，默认为Gson，可以通过EasyRouterSet进行更换
-+ EasyRouter劫持了onActivityResult()，改为接口回调
++ EasyRouter劫持了onActivityResult()，并将其改为接口回调
 
 ## Usage
 
@@ -98,6 +98,14 @@ finish();
 EasyRouter.route(MainActivity.this, new MessageBuilder()
                                              .setAddress("http://xzane.cc")
                                              .build());
+```
+
++ 更改数据序列化的工具
+
+首先需要实现一个序列化工具的工厂类，可以参考框架中的GsonConvertFactory
+
+```java
+EasyRouterSet.setConverterFactory(GsonConventerFactory.creat());
 ```
 
 ## Principle
