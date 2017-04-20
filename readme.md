@@ -102,7 +102,7 @@ EasyRouter.route(MainActivity.this, new MessageBuilder()
 
 ## Principle
 
-+ 使用动态代理生成**Instrumentation**类并通过反射替换ActivityThread中的Instrumentation变量，劫持**execStartActivity()**方法达到动态查找路由表并进行跳转的效果
++ 使用动态代理生成**Instrumentation**代理类并通过反射替换ActivityThread中的Instrumentation变量，劫持execStartActivity()方法达到动态查找路由表并进行跳转的效果
 + 所有的参数注入代码以及路由表的代码生成均通过APT在编译期完成
 + onActivityResult方法的劫持是通过生成无View的Fragment达到的，借鉴了RxPermission
 + 通过registerActivityLifecycleCallbacks(Application.ActivityLifecycleCallbacks callback)去劫持所有Activity的onCreat()方法
@@ -141,17 +141,18 @@ dependencies {
 + 地址做成多个
 
 ## License
+-------
 
-Copyright 2017 Zane
+    Copyright 2015 Jude
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+       http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
