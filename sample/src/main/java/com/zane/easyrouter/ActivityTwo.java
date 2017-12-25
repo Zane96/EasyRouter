@@ -45,8 +45,9 @@ public class ActivityTwo extends AppCompatActivity{
         findViewById(R.id.button_two).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EasyRouter.setResult(ActivityTwo.this, 0, new MessageBuilder().addParam("result_two", "data from two", String.class)
-                                                                            .build());
+                EasyRouter.setResult(ActivityTwo.this, 0, new MessageBuilder()
+                                                                  .addParam("result_two", "data from two", String.class)
+                                                                  .build());
                 ActivityTwo.this.finish();
             }
         });

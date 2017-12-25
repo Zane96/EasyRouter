@@ -3,6 +3,8 @@ package com.zane.easyrouter;
 import android.app.Application;
 
 import com.zane.router.EasyRouter;
+import com.zane.router.EasyRouterSet;
+import com.zane.router.converter.GsonConventerFactory;
 
 
 /**
