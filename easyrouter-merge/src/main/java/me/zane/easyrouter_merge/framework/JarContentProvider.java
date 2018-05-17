@@ -27,7 +27,7 @@ public class JarContentProvider extends TargetedQualifiedContentProvider {
 
     private void forActualInput(JarInput jarInput, ClassHandler processor) throws IOException {
         if (processor.onStart(jarInput)) {
-            Log.i("start trans jar "+ jarInput.getStatus() + " " + jarInput.getName() + " " + jarInput.getFile());
+            //Log.i("start trans jar "+ jarInput.getStatus() + " " + jarInput.getName() + " " + jarInput.getFile());
             ZipInputStream zis = new ZipInputStream(new BufferedInputStream(new FileInputStream(jarInput.getFile())));
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {

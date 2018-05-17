@@ -5,27 +5,22 @@ import com.android.build.api.transform.Transform;
 import com.android.build.api.transform.TransformException;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.gradle.internal.pipeline.TransformManager;
-import com.google.common.collect.Sets;
-
-import org.gradle.api.Project;
 
 import java.io.IOException;
 import java.util.Set;
 
+import me.zane.easyrouter_merge.bean.MergeInfo;
+import me.zane.easyrouter_merge.collect.CollectEngine;
 import me.zane.easyrouter_merge.framework.TransformContext;
-import me.zane.easyrouter_merge.rename.RenameEngine;
+import me.zane.easyrouter_merge.log.Log;
+import me.zane.easyrouter_merge.merge.MergeEngine;
 
 /**
  * Created by Zane on 2018/5/17.
  * Email: zanebot96@gmail.com
  */
-public class RenameTransform extends Transform{
-    private static final String TAG = RenameTransform.class.getSimpleName();
-    private Project project;
-
-    public RenameTransform(Project project) {
-        this.project = project;
-    }
+public class ApplicationTransform extends Transform{
+    private static final String TAG = ApplicationTransform.class.getSimpleName();
 
     @Override
     public String getName() {
@@ -39,7 +34,7 @@ public class RenameTransform extends Transform{
 
     @Override
     public Set<? super QualifiedContent.Scope> getScopes() {
-        return Sets.immutableEnumSet(QualifiedContent.Scope.PROJECT);
+        return TransformManager.SCOPE_FULL_PROJECT;
     }
 
     @Override
@@ -50,7 +45,12 @@ public class RenameTransform extends Transform{
     @Override
     public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         TransformContext context = new TransformContext(transformInvocation);
-        RenameEngine engine = new RenameEngine(context);
-        engine.stratRename(project);
+
+        CollectEngine collectEngine = new CollectEngine(context);
+        MergeInfo mergeInfo = collectEngine.startCollect();
+
+        Log.i("merinfo size: " + mergeInfo.toString());
+        MergeEngine mergeEngine = new MergeEngine(context);
+        mergeEngine.startMerge(mergeInfo);
     }
 }

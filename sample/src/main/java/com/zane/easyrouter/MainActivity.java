@@ -1,6 +1,5 @@
 package com.zane.easyrouter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +26,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        findViewById(R.id.button_start_library_activity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EasyRouter.route(MainActivity.this, new MessageBuilder().setAddress("activity://library-acitivity-one").build());
+            }
+        });
 
         findViewById(R.id.button_start_activitytwo_foresult).setOnClickListener(new View.OnClickListener() {
             @Override
