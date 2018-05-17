@@ -1,1 +1,1 @@
-include ':sample', ':easyrouter-annotation', ':easyrouter-compiler', ':router', ':easyrouter-generated'
+include ':sample', ':easyrouter-annotation', ':easyrouter-compiler', ':router', ':easyrouter-generated', ':sample-library', ':easyrouter-merge'

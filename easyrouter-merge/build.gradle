@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: LOCAL_REPO_URL)
+        pom.groupId = PROJ_GROUP
+        pom.artifactId = PROJ_ARTIFACTID
+        pom.version = PROJ_VERSION    	}
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile gradleApi()
+    compile localGroovy()
+    compileOnly "com.android.tools.build:gradle:3.0.1"
+    compile "com.android.tools.build:transform-api:1.5.0"
+    compile "org.ow2.asm:asm-all:5.1"
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"

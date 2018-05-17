@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+apply plugin: 'me.zane.easyrouter-merge'
+//if (isDebug) {
+//    apply plugin: 'com.android.application'
+//} else {
+//    apply plugin: 'com.android.library'
+//    apply plugin: 'me.zane.easyrouter-merge'
+//}
+
+android {
+    compileSdkVersion 26
+   // buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        defaultConfig {
+//            // 作为library时不能有applicationId,只有作为一个独立应用时才能够如下设置
+//            if (isDebug.toBoolean()){
+//                applicationId "com.example.zane.easyrouter"
+//            }
+//        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+//    sourceSets {
+//        main {
+//            if (false) {
+//                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+//            } else {
+//                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+//                java {
+//                    //release 时 debug 目录下文件不需要合并到主工程
+//                    exclude 'debug/**'
+//                }
+//            }
+//        }
+//    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile project(':router')
+    annotationProcessor project(':easyrouter-compiler')
+}
