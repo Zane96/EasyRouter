@@ -4,7 +4,7 @@
 
 欢迎加入Android技术交流群，群号码：577953847
 
-EasyRouter是一个简易的使用字符串进行Activity，Browser跳转的路由框架。
+EasyRouter是一个简易的使用字符串进行Activity，Browser跳转的路由框架，并支持组件化开发。
 
 ## Features
 + EasyRouter实现了通过字符串进行Activity之间跳转路由，通过APT在编译器实现路由表的构建，劫持了startActivity()进行动态路由
@@ -12,6 +12,7 @@ EasyRouter是一个简易的使用字符串进行Activity，Browser跳转的路�
 + EasyRouter实现了通过字符串进程Browser的路由跳转
 + EasyRouter支持更换路由跳转时数据序列化的解析器，默认为Gson，可以通过EasyRouterSet进行更换
 + EasyRouter劫持了onActivityResult()，并将其改为接口回调
++ EasyRouter通过transform+ASM实现了一个gradle插件来支持组件化开发
 
 ## Usage
 
@@ -116,37 +117,49 @@ EasyRouterSet.setConverterFactory(GsonConventerFactory.creat());
 + 所有的参数注入代码以及路由表的代码生成均通过APT在编译期完成
 + onActivityResult方法的劫持是通过生成无View的Fragment达到的，借鉴了RxPermission
 + 通过registerActivityLifecycleCallbacks(Application.ActivityLifecycleCallbacks callback)去劫持所有Activity的onCreat()方法
++ 编译期通过transform获取编译产物，使用ASM进行AOP操作融合application和library的路由表
 
 ## Dependency
 
 + 在Project build.gradle中
 ```groovy
-buildscript {
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
-}
-
 allprojects {
  repositories {
     maven { url "https://jitpack.io" }
  }
 }
 ```
-+ 在Module build.gradle中
++ 在Application build.gradle中
 ```groovy
-apply plugin: 'com.neenbedankt.android-apt'
-
 dependencies {
-    compile 'com.github.Zane96.EasyRouter:router:v1.0.2'
-    apt 'com.github.Zane96.EasyRouter:easyrouter-compiler:v1.0.2
+    compile 'com.github.Zane96.EasyRouter:router:v1.1.0'
+    annotationProcessor 'com.github.Zane96.EasyRouter:easyrouter-compiler:v1.1.0
 }
 ```
+
++ 如果您希望支持Android组件化开发，那么还需要在Project的build.gradle中添加如下依赖：
+
+```groovy
+buildscript {
+    dependencies {
+        classpath 'me.zane.routermerge:easyrouterMerge:1.0.0'
+    }
+}
+```
+
+并在Application和Library的build.gradle中均添加如下插件：
+
+```groovy
+apply plugin: 'com.zane.easyrouterMerge'
+```
+
+
 
 ## TODO
 
 + ~返回数据，自动注入~
 + ~请求报文实体类封装，Builder类生成URL，头部，数据body~
++ ~支持组件化开发~
 + 跳转时候的参数应该不依赖key的值，要自动或者手动注入
 + 地址做成多个
 
