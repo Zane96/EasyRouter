@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'me.zane.easyrouter-merge'
+apply plugin: 'com.zane.easyrouterMerge'
 
 android {
     compileSdkVersion 26

@@ -5,21 +5,31 @@ import com.android.build.api.transform.Transform;
 import com.android.build.api.transform.TransformException;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.gradle.internal.pipeline.TransformManager;
+import com.google.common.collect.Sets;
+
+import org.gradle.api.Project;
 
 import java.io.IOException;
 import java.util.Set;
 
-import me.zane.easyrouter_merge.log.Log;
-
+import me.zane.easyrouter_merge.framework.TransformContext;
+import me.zane.easyrouter_merge.rename.RenameEngine;
 
 /**
- * Created by Zane on 2018/4/19.
+ * Created by Zane on 2018/5/17.
  * Email: zanebot96@gmail.com
  */
-public class TestTransform extends Transform{
+public class LibraryTransform extends Transform{
+    private static final String TAG = LibraryTransform.class.getSimpleName();
+    private Project project;
+
+    public LibraryTransform(Project project) {
+        this.project = project;
+    }
+
     @Override
     public String getName() {
-        return "test_transform";
+        return TAG;
     }
 
     @Override
@@ -29,7 +39,7 @@ public class TestTransform extends Transform{
 
     @Override
     public Set<? super QualifiedContent.Scope> getScopes() {
-        return TransformManager.SCOPE_FULL_PROJECT;
+        return Sets.immutableEnumSet(QualifiedContent.Scope.PROJECT);
     }
 
     @Override
@@ -39,9 +49,8 @@ public class TestTransform extends Transform{
 
     @Override
     public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        System.out.println("------------------开始----------------------");
-        System.out.println("这是我们的自定义插件!");
-        System.out.println("------------------结束----------------------->");
-        System.out.println("length: " + transformInvocation.getInputs());
+        TransformContext context = new TransformContext(transformInvocation);
+        RenameEngine engine = new RenameEngine(context);
+        engine.stratRename(project);
     }
 }

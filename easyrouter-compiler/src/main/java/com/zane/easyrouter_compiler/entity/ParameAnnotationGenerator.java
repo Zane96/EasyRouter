@@ -168,7 +168,7 @@ public class ParameAnnotationGenerator {
 
             injectDataBuilder.endControlFlow()
                     .beginControlFlow("catch ($T e)", convertException)
-                    .addStatement("$T.e($S, e.getMessage())", zlog, className.toString() + "$$Inject")
+                    .addStatement("$T.e($S + e.getMessage())", zlog, className.toString() + "$$Inject")
                     .endControlFlow();
         }
 

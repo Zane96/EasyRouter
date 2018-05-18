@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'me.zane.easyrouter-merge'
+apply plugin: 'com.zane.easyrouterMerge'
 //if (isDebug) {
 //    apply plugin: 'com.android.application'
 //} else {
@@ -9,7 +9,7 @@ apply plugin: 'me.zane.easyrouter-merge'
 
 android {
     compileSdkVersion 26
-   // buildToolsVersion "26.0.2"
+    // buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 21
@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:26.1.0'
     testCompile 'junit:junit:4.12'

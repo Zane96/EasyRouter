@@ -9,7 +9,7 @@ import android.util.Log;
  */
 
 public final class ZLog {
-
+    private static final String TAG = "easyrouter";
     private static boolean DEBUG = true;
 
     private ZLog(){}
@@ -18,14 +18,14 @@ public final class ZLog {
         ZLog.DEBUG = DEBUG;
     }
 
-    public static void i(String key, String message) {
+    public static void i(String message) {
         if (DEBUG) {
-            Log.i(key, message);
+            Log.i(TAG, message);
         }
     }
 
-    public static void e(String key, String message) {
-        Log.e(key, message);
+    public static void e(String message) {
+        Log.e(TAG, message);
     }
 }
 

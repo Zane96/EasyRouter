@@ -4,6 +4,7 @@ import com.android.build.gradle.BaseExtension;
 
 import org.gradle.api.Project;
 import org.gradle.api.Plugin;
+import org.gradle.api.ProjectConfigurationException;
 
 /**
  * Created by Zane on 2018/4/19.
@@ -14,13 +15,13 @@ public class RouterModulePlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
         BaseExtension androidExtension = (BaseExtension) project.getExtensions().getByName("android");
-        if (project.getPlugins().getPlugin("com.android.library") != null) {
-            androidExtension.registerTransform(new RenameTransform(project));
+
+        if (project.getPlugins().findPlugin("com.android.application") != null) {
+            androidExtension.registerTransform(new ApplicationTransform());
+        } else if (project.getPlugins().findPlugin("com.android.library") != null) {
+            androidExtension.registerTransform(new LibraryTransform(project));
+        } else {
+            throw new ProjectConfigurationException("Need android application/library plugin to be applied first", null);
         }
-//        if (project.getPlugins().getPlugin("com.android.application") != null) {
-//            //androidExtension.registerTransform(new TestTransform());
-//        } else if (project.getPlugins().getPlugin("com.android.library") != null) {
-//            //androidExtension.registerTransform(new RenameTransform(project));
-//        }
     }
 }

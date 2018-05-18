@@ -5,8 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.zane.easyrouter.com.zane.easyrouter.MainActivity">
+    android:orientation="vertical">
+
+    <Button
+        android:text="跳转library Activity"
+        android:layout_margin="10dp"
+        android:id="@+id/button_start_library_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <Button
         android:text="跳转ActivityTwo回传参数"

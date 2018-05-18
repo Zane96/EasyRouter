@@ -48,7 +48,7 @@ public class RouterInstrumentation extends Instrumentation {
                     IBinder.class, Activity.class, Intent.class, int.class, Bundle.class);
             execStart.setAccessible(true);
         } catch (NoSuchMethodException e) {
-            ZLog.e("RouterInstrumentation", e.getMessage());
+            ZLog.e("RouterInstrumentation " + e.getMessage());
         }
 
         try {
@@ -56,7 +56,7 @@ public class RouterInstrumentation extends Instrumentation {
                 Class target = routerTable.queryTable(url.toString());
                 Intent intent = new Intent(who, target);
                 intent.putExtras(rawIntent.getExtras());
-                ZLog.i("RouterInstrumentation", target+"");
+                ZLog.i("RouterInstrumentation" + target);
 
                 return (ActivityResult) execStart.invoke(mBase, who, contextThread, token, t,
                         intent, requestCode, options);
@@ -65,7 +65,7 @@ public class RouterInstrumentation extends Instrumentation {
                         rawIntent, requestCode, options);
             }
         }catch (Exception e) {
-            ZLog.e("RouterInstrumentation", e.getMessage());
+            ZLog.e("RouterInstrumentation " + e.getMessage());
         }
 
         return null;
