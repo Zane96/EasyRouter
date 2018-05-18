@@ -30,7 +30,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_start_library_activity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EasyRouter.route(MainActivity.this, new MessageBuilder().setAddress("activity://library-acitivity-one").build());
+                EasyRouter.route(MainActivity.this, new MessageBuilder()
+                                                            .setAddress("activity://library_acitivity_one")
+                                                            .addParam("data", "data from application", String.class)
+                                                            .build());
             }
         });
 

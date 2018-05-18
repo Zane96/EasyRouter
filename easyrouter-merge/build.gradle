@@ -1,13 +1,22 @@
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'com.novoda.bintray-release'
 
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: LOCAL_REPO_URL)
-        pom.groupId = PROJ_GROUP
-        pom.artifactId = PROJ_ARTIFACTID
-        pom.version = PROJ_VERSION    	}
+publish {
+    userOrg = 'zane96'
+    groupId = 'com.zane'
+    artifactId = 'easyrouterMerge'
+    publishVersion = '1.0.0'
+    desc = 'one gradle plugin supporting component development in EasyRouter'
+    website = 'https://github.com/Zane96/EasyRouter'
 }
+
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        repository(url: LOCAL_REPO_URL)
+//        pom.groupId = PROJ_GROUP
+//        pom.artifactId = PROJ_ARTIFACTID
+//        pom.version = PROJ_VERSION    	}
+//}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

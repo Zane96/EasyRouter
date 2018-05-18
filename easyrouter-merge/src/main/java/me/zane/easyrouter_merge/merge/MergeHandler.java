@@ -46,9 +46,8 @@ public class MergeHandler implements ClassHandler{
         File outputFile = context.getRelativeFile(content);
         byte[] finalBytes = bytes;
         if (relativePath.endsWith(".class") && relativePath.contains("com/zane/easyrouter_generated")) {
-            Log.i("");
             ClassReader classReader = new ClassReader(finalBytes);
-            ClassWriter classWriter = new ClassWriter(COMPUTE_MAXS|COMPUTE_FRAMES);
+            ClassWriter classWriter = new ClassWriter(0);
             MergeClassVisitor mergeClassVisitor = new MergeClassVisitor(classWriter, mergeInfo);
             classReader.accept(mergeClassVisitor, 0);
             finalBytes = classWriter.toByteArray();
@@ -59,6 +58,5 @@ public class MergeHandler implements ClassHandler{
 
     @Override
     public void onComplete(QualifiedContent content) throws IOException {
-
     }
 }

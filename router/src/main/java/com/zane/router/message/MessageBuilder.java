@@ -36,9 +36,9 @@ public class MessageBuilder {
         try {
             String encodeValue = EasyRouterSet.getConverterFactory().encodeConverter(type).convert(value);
             params.put(key, encodeValue);
-            ZLog.i("testparam", key + " " + encodeValue);
+            ZLog.i("testparam " + key + " " + encodeValue);
         } catch (ConverterExpection e) {
-            ZLog.i("Message$Builder", e.getMessage());
+            ZLog.e("Message$Builder" + e.getMessage());
         }
         return this;
     }

@@ -1,8 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest package="me.zane.sample_library"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-        <activity android:name="me.zane.sample_library.LibraryActivityOne"/>
+        <activity android:name=".LibraryActivityOne"/>
     </application>
 
 </manifest>
