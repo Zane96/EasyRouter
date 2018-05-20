@@ -132,8 +132,8 @@ allprojects {
 + 在Application build.gradle中
 ```groovy
 dependencies {
-    compile 'com.github.Zane96.EasyRouter:router:v1.1.0'
-    annotationProcessor 'com.github.Zane96.EasyRouter:easyrouter-compiler:v1.1.0
+    compile 'com.github.Zane96.EasyRouter:router:v1.1.1'
+    annotationProcessor 'com.github.Zane96.EasyRouter:easyrouter-compiler:v1.1.1'
 }
 ```
 
@@ -142,7 +142,7 @@ dependencies {
 ```groovy
 buildscript {
     dependencies {
-        classpath 'me.zane.routermerge:easyrouterMerge:1.0.0'
+        classpath 'com.zane:easyrouterMerge:1.0.0'
     }
 }
 ```
@@ -150,7 +150,7 @@ buildscript {
 并在Application和Library的build.gradle中均添加如下插件：
 
 ```groovy
-apply plugin: 'com.zane.easyrouterMerge'
+apply plugin: 'me.zane.easyrouter-merge'
 ```
 
 

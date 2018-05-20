@@ -4,7 +4,7 @@ apply plugin: 'com.novoda.bintray-release'
 publish {
     userOrg = 'zane96'
     groupId = 'com.zane'
-    artifactId = 'easyrouterMerge'
+    artifactId = 'easyrouter-merge'
     publishVersion = '1.0.0'
     desc = 'one gradle plugin supporting component development in EasyRouter'
     website = 'https://github.com/Zane96/EasyRouter'

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.zane.easyrouterMerge'
+apply plugin: 'me.zane.easyrouter-merge'
 
 android {
     compileSdkVersion 26
@@ -32,6 +32,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.1.0'
     testCompile 'junit:junit:4.12'
     compile project(':router')
-    compile project(':sample-library')
     annotationProcessor project(':easyrouter-compiler')
+    compile project(':sample-library')
 }

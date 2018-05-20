@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.zane.easyrouterMerge'
+apply plugin: 'me.zane.easyrouter-merge'
 //if (isDebug) {
 //    apply plugin: 'com.android.application'
 //} else {
